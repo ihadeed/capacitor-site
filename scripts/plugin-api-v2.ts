@@ -1,22 +1,27 @@
-import { parse, outputReadme } from '@capacitor/docgen';
+import { 
+  parse, 
+  outputReadme 
+} from '@capacitor/docgen';
 import { parseMarkdown } from '@stencil/ssg/parse';
+import { readdirSync } from 'fs';
 import path from 'path';
+
+const API_DIR =  path.join(__dirname,'..','pages','docs','apis');
+const PLUGIN_DIR = path.join(
+  __dirname,
+  '..',
+  'node_modules',
+  '@capacitor',
+  'core',
+  'dist',
+  'esm',
+  'core-plugin-definitions.d.ts',
+)
 
 async function main() {
   // parse the core plugin dts file
   const apiFinder = parse({
-    inputFiles: [
-      path.join(
-        __dirname,
-        '..',
-        'node_modules',
-        '@capacitor',
-        'core',
-        'dist',
-        'esm',
-        'core-plugin-definitions.dts',
-      ),
-    ],
+    inputFiles: [PLUGIN_DIR],
   });
 
   // get all the mardown files we want to update
@@ -30,7 +35,7 @@ async function main() {
       if (markdownResults.attributes.pluginapi) {
         const docsData = apiFinder(markdownResults.attributes.pluginapi);
         if (docsData) {
-          await outputReadme(markdownFilePath, docsData);
+          await outputReadme(path.join(markdownFilePath, 'index.md'), docsData);
           console.log(`Updated: ${markdownFilePath}`);
         }
       }
@@ -43,7 +48,9 @@ async function main() {
 function getPluginApiMardownFiles() {
   // return a list of all the markdown files in the
   // pages/docs/apis directory we want to parse and add docs to
-  return [];
+  return readdirSync(API_DIR, { withFileTypes: true })
+    .filter(dirent => dirent.isDirectory())
+    .map(dirent => path.join(API_DIR, dirent.name));
 }
 
 main();
