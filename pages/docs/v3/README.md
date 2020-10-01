@@ -1,4 +1,4 @@
-# Guide Table of Contents (v2)
+# Guide Table of Contents (v3)
 
 * Getting Started
   * [Introduction](index.md)

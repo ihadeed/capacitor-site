@@ -1,7 +1,6 @@
 ---
 title: Haptics
 description: Haptics API
-pluginapi: HapticsPlugin
 contributors:
   - mlynch
   - jcesarmobile
@@ -13,8 +12,7 @@ contributors:
 
 The Haptics API provides physical feedback to the user through touch or vibration.
 
-<!--DOCGEN_INDEX_START-->
-<!--DOCGEN_INDEX_END-->
+<plugin-api-index name="@capacitor/haptics"></plugin-api-index>
 
 ## Android Notes
 
@@ -67,5 +65,6 @@ export class HapticsExample {
 }
 ```
 
-<!--DOCGEN_API_START-->
-<!--DOCGEN_API_END-->
+## API
+
+<plugin-api name="@capacitor/haptics"></plugin-api>

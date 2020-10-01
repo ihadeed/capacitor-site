@@ -1,4 +1,4 @@
-# Plugins Table of Contents
+# Plugins Table of Contents (v2)
 
 * Getting Started
   * [Introduction](index.md)
@@ -11,7 +11,7 @@
   * [Android Guide](android.md)
   * [Web/PWA Guide](web.md)
   * [JavaScript Guide](js.md)
-* Core Plugins
+* Official Plugins
   * [Introduction](../apis/index.md)
   * [Accessibility](../apis/accessibility/index.md)
   * [App](../apis/app/index.md)
