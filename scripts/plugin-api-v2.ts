@@ -2,7 +2,7 @@ import {
   parse, 
   outputReadme 
 } from '@capacitor/docgen';
-import { parseMarkdown } from '@stencil/ssg/parse';
+// import { parseMarkdown } from '@stencil/ssg/parse';
 import { readdirSync } from 'fs';
 import path from 'path';
 
@@ -25,32 +25,45 @@ async function main() {
   });
 
   // get all the mardown files we want to update
-  const markdownFilePaths = getPluginApiMardownFiles();
+  const plugins = listPlugins();
 
   // loop through all the markdown files and update them
   await Promise.all(
-    markdownFilePaths.map(async markdownFilePath => {
-      const markdownResults = await parseMarkdown(markdownFilePath);
-
-      if (markdownResults.attributes.pluginapi) {
-        const docsData = apiFinder(markdownResults.attributes.pluginapi);
-        if (docsData) {
-          await outputReadme(path.join(markdownFilePath, 'index.md'), docsData);
-          console.log(`Updated: ${markdownFilePath}`);
+    plugins.map(async plugin => {
+      try {
+        const pluginData = apiFinder(`${snakeToPascal(plugin)}Plugin`);
+        console.log(`${snakeToPascal(plugin)}Plugin`, plugin);
+        if (
+          pluginData && 
+          (pluginData.api || pluginData.interfaces.length || pluginData.enums.length)
+        ) {
+          await outputReadme(path.join(API_DIR, plugin, 'index.md'), pluginData);
+          console.log(`Updated: ${plugin}`);
         }
+      } catch(e) {
+        console.warn(`${plugin} error`, e);
       }
-    }),
+      
+    })
   );
 
   console.log(`Plugin V2 API Files Updated 🏄‍♂️`);
 }
 
-function getPluginApiMardownFiles() {
+function listPlugins() {
   // return a list of all the markdown files in the
   // pages/docs/apis directory we want to parse and add docs to
   return readdirSync(API_DIR, { withFileTypes: true })
     .filter(dirent => dirent.isDirectory())
-    .map(dirent => path.join(API_DIR, dirent.name));
+    .map(dirent => dirent.name);
+}
+
+function snakeToPascal(str) {
+  return str.replace(/(^\w|-\w)/g, clearAndUpper);
+}
+
+function clearAndUpper(text) {
+  return text.replace(/-/, "").toUpperCase();
 }
 
 main();

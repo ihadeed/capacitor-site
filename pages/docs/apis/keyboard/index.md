@@ -12,7 +12,21 @@ contributors:
 
 The Keyboard API provides keyboard display and visibility control, along with event tracking when the keyboard shows and hides.
 
-<plugin-api-index name="keyboard"></plugin-api-index>
+<!--DOCGEN_INDEX_START-->
+* [show()](#show)
+* [hide()](#hide)
+* [setAccessoryBarVisible()](#setaccessorybarvisible)
+* [setScroll()](#setscroll)
+* [setStyle()](#setstyle)
+* [setResizeMode()](#setresizemode)
+* [addListener()](#addlistener)
+* [addListener()](#addlistener)
+* [addListener()](#addlistener)
+* [addListener()](#addlistener)
+* [removeAllListeners()](#removealllisteners)
+* [Interfaces](#interfaces)
+* [Enums](#enums)
+<!--DOCGEN_INDEX_END-->
 
 
 ## Window Events for cordova-plugin-ionic-keyboard compatibility
@@ -101,4 +115,232 @@ Allowed values are
 
 ## API
 
-<plugin-api name="keyboard"></plugin-api>
+<!--DOCGEN_API_START-->
+<!--Update the source file JSDoc comments and rerun docgen to update the docs below-->
+## API
+
+### show
+
+```typescript
+show() => Promise<void>
+```
+
+Show the keyboard. This method is alpha and may have issues
+
+**Returns:** Promise&lt;void&gt;
+
+--------------------
+
+
+### hide
+
+```typescript
+hide() => Promise<void>
+```
+
+Hide the keyboard.
+
+**Returns:** Promise&lt;void&gt;
+
+--------------------
+
+
+### setAccessoryBarVisible
+
+```typescript
+setAccessoryBarVisible(options: { isVisible: boolean; }) => Promise<void>
+```
+
+Set whether the accessory bar should be visible on the keyboard. We recommend disabling
+the accessory bar for short forms (login, signup, etc.) to provide a cleaner UI
+
+| Param       | Type                    |
+| ----------- | ----------------------- |
+| **options** | { isVisible: boolean; } |
+
+**Returns:** Promise&lt;void&gt;
+
+--------------------
+
+
+### setScroll
+
+```typescript
+setScroll(options: { isDisabled: boolean; }) => Promise<void>
+```
+
+Programmatically enable or disable the WebView scroll
+
+| Param       | Type                     |
+| ----------- | ------------------------ |
+| **options** | { isDisabled: boolean; } |
+
+**Returns:** Promise&lt;void&gt;
+
+--------------------
+
+
+### setStyle
+
+```typescript
+setStyle(options: KeyboardStyleOptions) => Promise<void>
+```
+
+Programmatically set the keyboard style
+
+| Param       | Type                                          |
+| ----------- | --------------------------------------------- |
+| **options** | [KeyboardStyleOptions](#keyboardstyleoptions) |
+
+**Returns:** Promise&lt;void&gt;
+
+--------------------
+
+
+### setResizeMode
+
+```typescript
+setResizeMode(options: KeyboardResizeOptions) => Promise<void>
+```
+
+Programmatically set the resize mode
+
+| Param       | Type                                            |
+| ----------- | ----------------------------------------------- |
+| **options** | [KeyboardResizeOptions](#keyboardresizeoptions) |
+
+**Returns:** Promise&lt;void&gt;
+
+--------------------
+
+
+### addListener
+
+```typescript
+addListener(eventName: 'keyboardWillShow', listenerFunc: (info: KeyboardInfo) => void) => PluginListenerHandle
+```
+
+| Param            | Type                         |
+| ---------------- | ---------------------------- |
+| **eventName**    | "keyboardWillShow"           |
+| **listenerFunc** | (info: KeyboardInfo) => void |
+
+**Returns:** [PluginListenerHandle](#pluginlistenerhandle)
+
+--------------------
+
+
+### addListener
+
+```typescript
+addListener(eventName: 'keyboardDidShow', listenerFunc: (info: KeyboardInfo) => void) => PluginListenerHandle
+```
+
+| Param            | Type                         |
+| ---------------- | ---------------------------- |
+| **eventName**    | "keyboardDidShow"            |
+| **listenerFunc** | (info: KeyboardInfo) => void |
+
+**Returns:** [PluginListenerHandle](#pluginlistenerhandle)
+
+--------------------
+
+
+### addListener
+
+```typescript
+addListener(eventName: 'keyboardWillHide', listenerFunc: () => void) => PluginListenerHandle
+```
+
+| Param            | Type               |
+| ---------------- | ------------------ |
+| **eventName**    | "keyboardWillHide" |
+| **listenerFunc** | () => void         |
+
+**Returns:** [PluginListenerHandle](#pluginlistenerhandle)
+
+--------------------
+
+
+### addListener
+
+```typescript
+addListener(eventName: 'keyboardDidHide', listenerFunc: () => void) => PluginListenerHandle
+```
+
+| Param            | Type              |
+| ---------------- | ----------------- |
+| **eventName**    | "keyboardDidHide" |
+| **listenerFunc** | () => void        |
+
+**Returns:** [PluginListenerHandle](#pluginlistenerhandle)
+
+--------------------
+
+
+### removeAllListeners
+
+```typescript
+removeAllListeners() => void
+```
+
+Remove all native listeners for this plugin
+
+**Returns:** void
+
+--------------------
+
+
+### Interfaces
+
+
+#### KeyboardStyleOptions
+
+| Prop      | Type                            |
+| --------- | ------------------------------- |
+| **style** | [KeyboardStyle](#keyboardstyle) |
+
+
+#### KeyboardResizeOptions
+
+| Prop     | Type                              |
+| -------- | --------------------------------- |
+| **mode** | [KeyboardResize](#keyboardresize) |
+
+
+#### PluginListenerHandle
+
+| Prop       | Type       |
+| ---------- | ---------- |
+| **remove** | () => void |
+
+
+#### KeyboardInfo
+
+| Prop               | Type   |
+| ------------------ | ------ |
+| **keyboardHeight** | number |
+
+
+### Enums
+
+
+#### KeyboardStyle
+
+| Members   | Value   |
+| --------- | ------- |
+| **Dark**  | "DARK"  |
+| **Light** | "LIGHT" |
+
+
+#### KeyboardResize
+
+| Members    | Value    |
+| ---------- | -------- |
+| **Body**   | "body"   |
+| **Ionic**  | "ionic"  |
+| **Native** | "native" |
+| **None**   | "none"   |
+
+
+<!--DOCGEN_API_END-->

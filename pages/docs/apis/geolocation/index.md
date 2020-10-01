@@ -13,7 +13,12 @@ contributors:
 The Geolocation API provides simple methods for getting and tracking the current position of the device using GPS, along
 with altitude, heading, and speed information if available.
 
-<plugin-api-index name="geolocation"></plugin-api-index>
+<!--DOCGEN_INDEX_START-->
+* [getCurrentPosition()](#getcurrentposition)
+* [watchPosition()](#watchposition)
+* [clearWatch()](#clearwatch)
+* [Interfaces](#interfaces)
+<!--DOCGEN_INDEX_END-->
 
 ## iOS Notes
 
@@ -64,4 +69,81 @@ class GeolocationExample {
 
 ## API
 
-<plugin-api name="geolocation"></plugin-api>
+<!--DOCGEN_API_START-->
+<!--Update the source file JSDoc comments and rerun docgen to update the docs below-->
+## API
+
+### getCurrentPosition
+
+```typescript
+getCurrentPosition(options?: GeolocationOptions) => Promise<GeolocationPosition>
+```
+
+Get the current GPS location of the device
+
+| Param       | Type                                      |
+| ----------- | ----------------------------------------- |
+| **options** | [GeolocationOptions](#geolocationoptions) |
+
+**Returns:** Promise&lt;[GeolocationPosition](#geolocationposition)&gt;
+
+--------------------
+
+
+### watchPosition
+
+```typescript
+watchPosition(options: GeolocationOptions, callback: GeolocationWatchCallback) => CallbackID
+```
+
+Set up a watch for location changes. Note that watching for location changes
+can consume a large amount of energy. Be smart about listening only when you need to.
+
+| Param        | Type                                               |
+| ------------ | -------------------------------------------------- |
+| **options**  | [GeolocationOptions](#geolocationoptions)          |
+| **callback** | (position: GeolocationPosition, err?: any) => void |
+
+**Returns:** string
+
+--------------------
+
+
+### clearWatch
+
+```typescript
+clearWatch(options: { id: string; }) => Promise<void>
+```
+
+Clear a given watch
+
+| Param       | Type            |
+| ----------- | --------------- |
+| **options** | { id: string; } |
+
+**Returns:** Promise&lt;void&gt;
+
+--------------------
+
+
+### Interfaces
+
+
+#### GeolocationPosition
+
+| Prop          | Type                                                                                                                                       | Description                                             |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------- |
+| **timestamp** | number                                                                                                                                     | Creation timestamp for coords                           |
+| **coords**    | { latitude: number; longitude: number; accuracy: number; altitudeAccuracy?: number; altitude?: number; speed?: number; heading?: number; } | The GPS coordinates along with the accuracy of the data |
+
+
+#### GeolocationOptions
+
+| Prop                   | Type    |
+| ---------------------- | ------- |
+| **enableHighAccuracy** | boolean |
+| **timeout**            | number  |
+| **maximumAge**         | number  |
+
+
+<!--DOCGEN_API_END-->

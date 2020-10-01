@@ -33,4 +33,35 @@ async show() {
 
 ## API
 
-<plugin-api name="toast"></plugin-api>
+<!--DOCGEN_API_START-->
+<!--Update the source file JSDoc comments and rerun docgen to update the docs below-->
+## API
+
+### show
+
+```typescript
+show(options: ToastShowOptions) => Promise<void>
+```
+
+| Param       | Type                                  |
+| ----------- | ------------------------------------- |
+| **options** | [ToastShowOptions](#toastshowoptions) |
+
+**Returns:** Promise&lt;void&gt;
+
+--------------------
+
+
+### Interfaces
+
+
+#### ToastShowOptions
+
+| Prop         | Type                          | Description                                                                |
+| ------------ | ----------------------------- | -------------------------------------------------------------------------- |
+| **text**     | string                        |                                                                            |
+| **duration** | "short" \| "long"             | Duration of the toast, either 'short' (2000ms, default) or 'long' (3500ms) |
+| **position** | "center" \| "bottom" \| "top" |                                                                            |
+
+
+<!--DOCGEN_API_END-->

@@ -13,7 +13,8 @@ contributors:
 
 The Splash Screen API provides methods for showing or hiding a Splash image.
 
-<plugin-api-index name="splash-screen"></plugin-api-index>
+<!--DOCGEN_INDEX_START-->
+<!--DOCGEN_INDEX_END-->
 
 ## Example
 
@@ -153,4 +154,5 @@ To use splash screen images named something other than `splash.png`, set `androi
 
 ## API
 
-<plugin-api name="splash-screen"></plugin-api>
+<!--DOCGEN_API_START-->
+<!--DOCGEN_API_END-->

@@ -12,7 +12,12 @@ contributors:
 
 The Network API provides events for monitoring network status changes, along with querying the current state of the network.
 
-<plugin-api-index name="network"></plugin-api-index>
+<!--DOCGEN_INDEX_START-->
+* [getStatus()](#getstatus)
+* [addListener()](#addlistener)
+* [removeAllListeners()](#removealllisteners)
+* [Interfaces](#interfaces)
+<!--DOCGEN_INDEX_END-->
 
 ## Example
 
@@ -49,4 +54,70 @@ This permission allows the app to access information about the current network, 
 
 ## API
 
-<plugin-api name="network"></plugin-api>
+<!--DOCGEN_API_START-->
+<!--Update the source file JSDoc comments and rerun docgen to update the docs below-->
+## API
+
+### getStatus
+
+```typescript
+getStatus() => Promise<NetworkStatus>
+```
+
+Query the current network status
+
+**Returns:** Promise&lt;[NetworkStatus](#networkstatus)&gt;
+
+--------------------
+
+
+### addListener
+
+```typescript
+addListener(eventName: 'networkStatusChange', listenerFunc: (status: NetworkStatus) => void) => PluginListenerHandle
+```
+
+Listen for network status change events
+
+| Param            | Type                            |
+| ---------------- | ------------------------------- |
+| **eventName**    | "networkStatusChange"           |
+| **listenerFunc** | (status: NetworkStatus) => void |
+
+**Returns:** [PluginListenerHandle](#pluginlistenerhandle)
+
+--------------------
+
+
+### removeAllListeners
+
+```typescript
+removeAllListeners() => void
+```
+
+Remove all native listeners for this plugin
+
+**Returns:** void
+
+--------------------
+
+
+### Interfaces
+
+
+#### NetworkStatus
+
+| Prop               | Type                                        |
+| ------------------ | ------------------------------------------- |
+| **connected**      | boolean                                     |
+| **connectionType** | "none" \| "unknown" \| "wifi" \| "cellular" |
+
+
+#### PluginListenerHandle
+
+| Prop       | Type       |
+| ---------- | ---------- |
+| **remove** | () => void |
+
+
+<!--DOCGEN_API_END-->

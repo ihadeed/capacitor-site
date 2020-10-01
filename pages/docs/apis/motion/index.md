@@ -12,7 +12,12 @@ contributors:
 
 The Motion API tracks accelerometer and device orientation (compass heading, etc.)
 
-<plugin-api-index name="motion"></plugin-api-index>
+<!--DOCGEN_INDEX_START-->
+* [addListener()](#addlistener)
+* [addListener()](#addlistener)
+* [removeAllListeners()](#removealllisteners)
+* [Interfaces](#interfaces)
+<!--DOCGEN_INDEX_END-->
 
 ## Permissions
 
@@ -46,4 +51,86 @@ See the [DeviceMotionEvent](https://developer.mozilla.org/en-US/docs/Web/API/Dev
 
 ### API
 
-<plugin-api name="motion"></plugin-api>
+<!--DOCGEN_API_START-->
+<!--Update the source file JSDoc comments and rerun docgen to update the docs below-->
+## API
+
+### addListener
+
+```typescript
+addListener(eventName: 'accel', listenerFunc: (event: MotionEventResult) => void) => PluginListenerHandle
+```
+
+Listen for accelerometer data
+
+| Param            | Type                               |
+| ---------------- | ---------------------------------- |
+| **eventName**    | "accel"                            |
+| **listenerFunc** | (event: MotionEventResult) => void |
+
+**Returns:** [PluginListenerHandle](#pluginlistenerhandle)
+
+--------------------
+
+
+### addListener
+
+```typescript
+addListener(eventName: 'orientation', listenerFunc: (event: MotionOrientationEventResult) => void) => PluginListenerHandle
+```
+
+Listen for device orientation change (compass heading, etc.)
+
+| Param            | Type                                          |
+| ---------------- | --------------------------------------------- |
+| **eventName**    | "orientation"                                 |
+| **listenerFunc** | (event: MotionOrientationEventResult) => void |
+
+**Returns:** [PluginListenerHandle](#pluginlistenerhandle)
+
+--------------------
+
+
+### removeAllListeners
+
+```typescript
+removeAllListeners() => void
+```
+
+Remove all native listeners for this plugin
+
+**Returns:** void
+
+--------------------
+
+
+### Interfaces
+
+
+#### PluginListenerHandle
+
+| Prop       | Type       |
+| ---------- | ---------- |
+| **remove** | () => void |
+
+
+#### MotionEventResult
+
+| Prop                             | Type                                            |
+| -------------------------------- | ----------------------------------------------- |
+| **acceleration**                 | { x: number; y: number; z: number; }            |
+| **accelerationIncludingGravity** | { x: number; y: number; z: number; }            |
+| **rotationRate**                 | { alpha: number; beta: number; gamma: number; } |
+| **interval**                     | number                                          |
+
+
+#### MotionOrientationEventResult
+
+| Prop      | Type   |
+| --------- | ------ |
+| **alpha** | number |
+| **beta**  | number |
+| **gamma** | number |
+
+
+<!--DOCGEN_API_END-->

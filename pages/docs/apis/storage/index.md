@@ -18,7 +18,13 @@ On iOS this plugin will use [UserDefaults](https://developer.apple.com/documenta
 
 Note: this API is not meant for high-performance data storage applications. Take a look at using SQLite or a separate data engine if your application will store a lot of items, have high read/write load, or require complex querying.
 
-<plugin-api-index name="storage"></plugin-api-index>
+<!--DOCGEN_INDEX_START-->
+* [get()](#get)
+* [set()](#set)
+* [remove()](#remove)
+* [clear()](#clear)
+* [keys()](#keys)
+<!--DOCGEN_INDEX_END-->
 
 ## Working with JSON
 
@@ -80,4 +86,85 @@ async clear() {
 
 ## API
 
-<plugin-api name="storage"></plugin-api>
+<!--DOCGEN_API_START-->
+<!--Update the source file JSDoc comments and rerun docgen to update the docs below-->
+## API
+
+### get
+
+```typescript
+get(options: { key: string; }) => Promise<{ value: string | null; }>
+```
+
+Get the value with the given key.
+
+| Param       | Type             |
+| ----------- | ---------------- |
+| **options** | { key: string; } |
+
+**Returns:** Promise&lt;{ value: string; }&gt;
+
+--------------------
+
+
+### set
+
+```typescript
+set(options: { key: string; value: string; }) => Promise<void>
+```
+
+Set the value for the given key
+
+| Param       | Type                            |
+| ----------- | ------------------------------- |
+| **options** | { key: string; value: string; } |
+
+**Returns:** Promise&lt;void&gt;
+
+--------------------
+
+
+### remove
+
+```typescript
+remove(options: { key: string; }) => Promise<void>
+```
+
+Remove the value for this key (if any)
+
+| Param       | Type             |
+| ----------- | ---------------- |
+| **options** | { key: string; } |
+
+**Returns:** Promise&lt;void&gt;
+
+--------------------
+
+
+### clear
+
+```typescript
+clear() => Promise<void>
+```
+
+Clear stored keys and values.
+
+**Returns:** Promise&lt;void&gt;
+
+--------------------
+
+
+### keys
+
+```typescript
+keys() => Promise<{ keys: string[]; }>
+```
+
+Return the list of known keys
+
+**Returns:** Promise&lt;{ keys: string[]; }&gt;
+
+--------------------
+
+
+<!--DOCGEN_API_END-->

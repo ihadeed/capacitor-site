@@ -16,4 +16,56 @@ first and optionally displaying a custom UI to prepare the user for the permissi
 
 ## API
 
-<plugin-api name="permissions"></plugin-api>
+<!--DOCGEN_API_START-->
+<!--Update the source file JSDoc comments and rerun docgen to update the docs below-->
+## API
+
+### query
+
+```typescript
+query(options: PermissionsOptions) => Promise<PermissionResult>
+```
+
+| Param       | Type                                      |
+| ----------- | ----------------------------------------- |
+| **options** | [PermissionsOptions](#permissionsoptions) |
+
+**Returns:** Promise&lt;[PermissionResult](#permissionresult)&gt;
+
+--------------------
+
+
+### Interfaces
+
+
+#### PermissionResult
+
+| Prop      | Type                              |
+| --------- | --------------------------------- |
+| **state** | "denied" \| "granted" \| "prompt" |
+
+
+#### PermissionsOptions
+
+| Prop     | Type                              |
+| -------- | --------------------------------- |
+| **name** | [PermissionType](#permissiontype) |
+
+
+### Enums
+
+
+#### PermissionType
+
+| Members            | Value             |
+| ------------------ | ----------------- |
+| **Camera**         | "camera"          |
+| **Photos**         | "photos"          |
+| **Geolocation**    | "geolocation"     |
+| **Notifications**  | "notifications"   |
+| **ClipboardRead**  | "clipboard-read"  |
+| **ClipboardWrite** | "clipboard-write" |
+| **Microphone**     | "microphone"      |
+
+
+<!--DOCGEN_API_END-->
