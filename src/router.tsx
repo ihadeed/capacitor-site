@@ -10,6 +10,7 @@ import { getPage } from './data.server/prismic';
 import state from './store';
 import { getDocsData } from './data.server/docs';
 import { getBlogData, getAllBlogData } from './data.server/blog';
+import { getDocsDataV2 } from './data.server/docs-v2';
 
 export const Router = createStaticRouter();
 
@@ -37,9 +38,7 @@ export const Routes = () => (
           <blog-page data={data} />
         </Fragment>
       )}
-    >
-      
-    </Route>
+    ></Route>
 
     <Route
       path={match('/blog/:slug*')}
@@ -68,8 +67,14 @@ export const Routes = () => (
     </Route>
 
     <Route
-      path={matchAny(['/docs/:id*', '/docs'])}
+      path={matchAny(['/docs/v3/:id*', '/docs/v3'])}
       mapParams={staticState(getDocsData)}
+      render={(_, data) => <docs-component data={data} />}
+    />
+
+    <Route
+      path={matchAny(['/docs/:id*', '/docs'])}
+      mapParams={staticState(getDocsDataV2)}
       render={(_, data) => <docs-component data={data} />}
     />
 
@@ -119,22 +124,15 @@ const SiteHeader = () => (
   </Fragment>
 );
 
-export const handleRoutableLinkClick = (e: MouseEvent) => {
-  if (e.metaKey || e.ctrlKey) {
-    return;
-  }
+const docsPath = '/docs';
+const versionedDocsPath = '/docs/v3';
 
-  if (e && (e.which == 2 || e.button == 4)) {
-    return;
+export const docsVersionHref = (path: string) => {
+  if (
+    Router.activePath.startsWith(versionedDocsPath) &&
+    !path.startsWith(versionedDocsPath)
+  ) {
+    return path.replace(docsPath, versionedDocsPath);
   }
-
-  if ((e.target as HTMLElement).tagName === 'A') {
-    const href = (e.target as HTMLAnchorElement).href;
-    const u = new URL(href);
-    if (u.origin === window.location.origin) {
-      e.stopPropagation();
-      e.preventDefault();
-      Router.push(u.pathname);
-    }
-  }
+  return path;
 };

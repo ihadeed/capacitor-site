@@ -12,7 +12,7 @@ import {
 } from '@stencil/core';
 import { href } from '../../stencil-router-v2';
 import type { TableOfContents } from '@stencil/ssg';
-import Router from '../../router';
+import Router, { docsVersionHref } from '../../router';
 import state from '../../store';
 import type { DocsTemplate } from '../../data.server/docs';
 
@@ -95,7 +95,10 @@ export class SiteMenu implements ComponentInterface {
                   />
                 )}
               </a>
-              <a {...href('/docs')} class="menu-header__docs-link">
+              <a
+                {...href(docsVersionHref('/docs'))}
+                class="menu-header__docs-link"
+              >
                 Docs
               </a>
               <version-select />
@@ -103,7 +106,7 @@ export class SiteMenu implements ComponentInterface {
             <ul class="section-list">
               <li>
                 <a
-                  {...href('/docs')}
+                  {...href(docsVersionHref('/docs'))}
                   class={{ active: this.template === 'guide' }}
                 >
                   Guides
@@ -111,7 +114,7 @@ export class SiteMenu implements ComponentInterface {
               </li>
               <li>
                 <a
-                  {...href('/docs/plugins')}
+                  {...href(docsVersionHref('/docs/plugins'))}
                   class={{ active: this.template === 'plugins' }}
                 >
                   Plugins
@@ -119,7 +122,7 @@ export class SiteMenu implements ComponentInterface {
               </li>
               <li>
                 <a
-                  {...href('/docs/reference/cli')}
+                  {...href(docsVersionHref('/docs/reference/cli'))}
                   class={{ active: this.template === 'reference' }}
                 >
                   CLI

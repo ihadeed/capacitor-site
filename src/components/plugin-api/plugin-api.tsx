@@ -81,7 +81,7 @@ export class PluginApi {
 
   getInterfacesUsed() {
     const html = <h3 id="interfaces">Interfaces Used</h3>;
-    let childrenReferences = [];
+    // let childrenReferences = [];
     // this.interfacesUsed.forEach(face => {
     //   const interfaceDecl = typeLookup[face.id];
     //   if(!interfaceDecl) {
@@ -162,7 +162,7 @@ export class PluginApi {
     return html;
   }
 
-  generateMethodSignature = (method, signature, signatureIndex) => {
+  generateMethodSignature = (method, signature, _signatureIndex) => {
     //console.log(util.inspect(signature, {showHidden: false, depth: 20}))
     const params = signature.parameters;
     const parts = [

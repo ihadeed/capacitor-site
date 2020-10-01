@@ -12,7 +12,7 @@ import { getGithubData } from './github';
 
 const repoRootDir = join(__dirname, '..', '..');
 const pagesDir = join(repoRootDir, 'pages');
-const docsDir = join(pagesDir, 'docs', 'v3');
+const docsDir = join(pagesDir, 'docs');
 
 export interface DocsData extends MarkdownResults {
   contributors?: string[];
@@ -25,7 +25,7 @@ export interface DocsData extends MarkdownResults {
 
 export type DocsTemplate = 'guide' | 'plugins' | 'reference';
 
-export const getDocsData: MapParamData = async ({ id }) => {
+export const getDocsDataV2: MapParamData = async ({ id }) => {
   if (!id) {
     id = 'index.md';
   }

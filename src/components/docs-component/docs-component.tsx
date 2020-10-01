@@ -9,6 +9,7 @@ import {
 import Helmet from '@stencil/helmet';
 import { RenderJsxAst } from '@stencil/ssg';
 import { DocsData } from '../../data.server/docs';
+import { docsVersionHref } from '../../router';
 import { href } from '../../stencil-router-v2';
 
 @Component({
@@ -110,7 +111,7 @@ const elementRouterHref = (tagName: string, props: any) => {
 
     return {
       ...props,
-      ...href(props.href),
+      ...href(docsVersionHref(props.href)),
     };
   }
   return props;

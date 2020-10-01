@@ -120,7 +120,7 @@ const hasPreviewMarker = (ast: JsxAstNode[]) => {
 const getParseOpts = (preview: boolean) => {
   if (preview) {
     return {
-      async beforeSerialize(frag: DocumentFragment) {  
+      async beforeHtmlSerialize(frag: DocumentFragment) {  
         if (frag.querySelector('preview-end')) {            
           const notInPreview = frag.querySelectorAll('preview-end ~ *');                   
   

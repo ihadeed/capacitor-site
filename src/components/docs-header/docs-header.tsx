@@ -7,7 +7,7 @@ import {
   h,
 } from '@stencil/core';
 import { href } from '../../stencil-router-v2';
-import Router from '../../router';
+import Router, { docsVersionHref } from '../../router';
 import { DocsTemplate } from '../../data.server/docs';
 
 @Component({
@@ -49,17 +49,17 @@ export class DocsHeader implements ComponentInterface {
 
           <nav class="docs-header-links">
             <div class="docs-header-links__internal hide-mobile">
-              <a {...href('/docs')} class={{ active: template === 'guide' }}>
+              <a {...href(docsVersionHref('/docs'))} class={{ active: template === 'guide' }}>
                 Guides
               </a>
               <a
-                {...href('/docs/plugins')}
+                {...href(docsVersionHref('/docs/plugins'))}
                 class={{ active: template === 'plugins' }}
               >
                 Plugins
               </a>
               <a
-                {...href('/docs/reference/cli')}
+                {...href(docsVersionHref('/docs/reference/cli'))}
                 class={{ active: template === 'reference' }}
               >
                 CLI
