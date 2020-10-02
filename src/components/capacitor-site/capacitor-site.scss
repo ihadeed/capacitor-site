@@ -237,19 +237,20 @@ strong,
 b {
   font-weight: 500;
 }
-
-a {
-  transition: border 0.3s;
-  color: variables.$link-color;
-  border-bottom: 1px solid transparent;
-
-  &:hover {
-    border-bottom-color: rgba(variables.$link-color, 0.3);
+.doc-content {
+  a {
+    transition: border 0.3s;
+    color: variables.$link-color;
+    border-bottom: 1px solid transparent;
+  
+    &:hover {
+      border-bottom-color: rgba(variables.$link-color, 0.3);
+    }
   }
-}
-
-p a {
-  font-weight: 500;
+  
+  p a {
+    font-weight: 500;
+  }
 }
 
 .paragraph-intro {
