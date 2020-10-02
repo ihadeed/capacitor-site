@@ -194,6 +194,7 @@ export class LandingPage {
                   <img
                     src={`/assets/img/landing/native-${f.key}.png`}
                     alt={f.name}
+                    loading="lazy"
                   />
                   <Heading level={4}>{f.name}</Heading>
                   <Paragraph>{f.desc}</Paragraph>
@@ -273,12 +274,14 @@ export class LandingPage {
                       <img
                         src={`/assets/img/landing/framework-${f.key}.png`}
                         alt={f.name}
+                        loading="lazy"
                       />
                     </a>
                   ) : (
                     <img
                       src={`/assets/img/landing/framework-${f.key}.png`}
                       alt={f.name}
+                      loading="lazy"
                     />
                   )}
                 </Col>
@@ -332,6 +335,7 @@ npx cap init
             src="/assets/img/landing/android.png"
             alt="Android"
             class="android"
+            loading="lazy"
           />
         </Col>
         <Col md={6} sm={6} xs={6} cols={12}>
