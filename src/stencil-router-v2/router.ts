@@ -285,8 +285,10 @@ export const createWindowRouter = (
       // in this window instance, so let's do a full page reload
       // cuz we don't have any data we can load synchronously
       loc.reload();
-    } else {
+    } else if (loc.pathname !== state.activePath) {
+      // we've got an entirely different path and we
       // we ensured we have synchronous static state ready to go
+      // changing of only the hash should not trigger a push
       push(loc.href, true);
     }
   };
