@@ -14,6 +14,9 @@ contributors:
 The Splash Screen API provides methods for showing or hiding a Splash image.
 
 <!--DOCGEN_INDEX_START-->
+* [show()](#show)
+* [hide()](#hide)
+* [Interfaces](#interfaces)
 <!--DOCGEN_INDEX_END-->
 
 ## Example
@@ -155,4 +158,82 @@ To use splash screen images named something other than `splash.png`, set `androi
 ## API
 
 <!--DOCGEN_API_START-->
+<!--Update the source file JSDoc comments and rerun docgen to update the docs below-->
+## API
+
+### show
+
+```typescript
+show(options?: SplashScreenShowOptions, callback?: Function) => Promise<void>
+```
+
+Show the splash screen
+
+| Param        | Type                                                |
+| ------------ | --------------------------------------------------- |
+| **options**  | [SplashScreenShowOptions](#splashscreenshowoptions) |
+| **callback** | [Function](#function)                               |
+
+**Returns:** Promise&lt;void&gt;
+
+--------------------
+
+
+### hide
+
+```typescript
+hide(options?: SplashScreenHideOptions, callback?: Function) => Promise<void>
+```
+
+Hide the splash screen
+
+| Param        | Type                                                |
+| ------------ | --------------------------------------------------- |
+| **options**  | [SplashScreenHideOptions](#splashscreenhideoptions) |
+| **callback** | [Function](#function)                               |
+
+**Returns:** Promise&lt;void&gt;
+
+--------------------
+
+
+### Interfaces
+
+
+#### SplashScreenShowOptions
+
+| Prop                | Type    | Description                                                                           |
+| ------------------- | ------- | ------------------------------------------------------------------------------------- |
+| **autoHide**        | boolean | Whether to auto hide the splash after showDuration                                    |
+| **fadeInDuration**  | number  | How long (in ms) to fade in. Default is 200ms                                         |
+| **fadeOutDuration** | number  | How long (in ms) to fade out. Default is 200ms                                        |
+| **showDuration**    | number  | How long to show the splash screen when autoHide is enabled (in ms) Default is 3000ms |
+
+
+#### Function
+
+Creates a new function.
+
+| Prop          | Type                  |
+| ------------- | --------------------- |
+| **prototype** | any                   |
+| **length**    | number                |
+| **arguments** | any                   |
+| **caller**    | [Function](#function) |
+
+| Method       | Signature                                                 | Description                                                                                                                                                                                                              |
+| ------------ | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **apply**    | (this: Function, thisArg: any, argArray?: any) => any     | Calls the function, substituting the specified object for the this value of the function, and the specified array for the arguments of the function.                                                                     |
+| **call**     | (this: Function, thisArg: any, ...argArray: any[]) => any | Calls a method of an object, substituting another object for the current object.                                                                                                                                         |
+| **bind**     | (this: Function, thisArg: any, ...argArray: any[]) => any | For a given function, creates a bound function that has the same body as the original function. The this object of the bound function is associated with the specified object, and has the specified initial parameters. |
+| **toString** | () => string                                              | Returns a string representation of a function.                                                                                                                                                                           |
+
+
+#### SplashScreenHideOptions
+
+| Prop                | Type   | Description                                    |
+| ------------------- | ------ | ---------------------------------------------- |
+| **fadeOutDuration** | number | How long (in ms) to fade out. Default is 200ms |
+
+
 <!--DOCGEN_API_END-->

@@ -15,6 +15,9 @@ supports running a task when the app is backgrounded, and soon will support peri
 fetch operations.
 
 <!--DOCGEN_INDEX_START-->
+* [beforeExit()](#beforeexit)
+* [finish()](#finish)
+* [Interfaces](#interfaces)
 <!--DOCGEN_INDEX_END-->
 
 ## Background Task Guidelines
@@ -71,4 +74,74 @@ App.addListener('appStateChange', (state) => {
 ## API
 
 <!--DOCGEN_API_START-->
+<!--Update the source file JSDoc comments and rerun docgen to update the docs below-->
+## API
+
+### beforeExit
+
+```typescript
+beforeExit(cb: Function) => CallbackID
+```
+
+When the app is backgrounded, this method allows you to run a short-lived
+background task that will ensure that you
+can finish any work your app needs to do (such as finishing an upload
+or network request). This is especially important on iOS as any operations
+would normally be suspended without initiating a background task.
+
+This method should finish in less than 3 minutes or your app risks
+being terminated by the OS.
+
+When you are finished, this callback _must_ call `BackgroundTask.finish({ taskId })`
+where `taskId` is the value returned from `BackgroundTask.beforeExit()`
+
+| Param  | Type                  | Description                                                              |
+| ------ | --------------------- | ------------------------------------------------------------------------ |
+| **cb** | [Function](#function) | the task to run when the app is backgrounded but before it is terminated |
+
+**Returns:** string
+
+--------------------
+
+
+### finish
+
+```typescript
+finish(options: { taskId: CallbackID; }) => void
+```
+
+Notify the OS that the given task is finished and the OS can continue
+backgrounding the app.
+
+| Param       | Type                |
+| ----------- | ------------------- |
+| **options** | { taskId: string; } |
+
+**Returns:** void
+
+--------------------
+
+
+### Interfaces
+
+
+#### Function
+
+Creates a new function.
+
+| Prop          | Type                  |
+| ------------- | --------------------- |
+| **prototype** | any                   |
+| **length**    | number                |
+| **arguments** | any                   |
+| **caller**    | [Function](#function) |
+
+| Method       | Signature                                                 | Description                                                                                                                                                                                                              |
+| ------------ | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **apply**    | (this: Function, thisArg: any, argArray?: any) => any     | Calls the function, substituting the specified object for the this value of the function, and the specified array for the arguments of the function.                                                                     |
+| **call**     | (this: Function, thisArg: any, ...argArray: any[]) => any | Calls a method of an object, substituting another object for the current object.                                                                                                                                         |
+| **bind**     | (this: Function, thisArg: any, ...argArray: any[]) => any | For a given function, creates a bound function that has the same body as the original function. The this object of the bound function is associated with the specified object, and has the specified initial parameters. |
+| **toString** | () => string                                              | Returns a string representation of a function.                                                                                                                                                                           |
+
+
 <!--DOCGEN_API_END-->
