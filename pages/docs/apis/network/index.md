@@ -52,8 +52,6 @@ The Network API requires the following permission be added to your `AndroidManif
 
 This permission allows the app to access information about the current network, such as whether it is connected to wifi or cellular.
 
-## API
-
 <!--DOCGEN_API_START-->
 <!--Update the source file JSDoc comments and rerun docgen to update the docs below-->
 ## API

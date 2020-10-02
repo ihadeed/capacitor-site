@@ -85,8 +85,6 @@ An empty Array can be provided if none of the previous options are desired. `pus
 
 [Using Push Notifications with Firebase in an Ionic Angular App](/docs/guides/push-notifications-firebase)
 
-## API
-
 <!--DOCGEN_API_START-->
 <!--Update the source file JSDoc comments and rerun docgen to update the docs below-->
 ## API

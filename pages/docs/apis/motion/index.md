@@ -49,8 +49,6 @@ Motion.addListener('accel', (event) => {
 
 See the [DeviceMotionEvent](https://developer.mozilla.org/en-US/docs/Web/API/DeviceMotionEvent) API to understand the data supplied in `event`.
 
-### API
-
 <!--DOCGEN_API_START-->
 <!--Update the source file JSDoc comments and rerun docgen to update the docs below-->
 ## API

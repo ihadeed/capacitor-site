@@ -81,8 +81,6 @@ async takePicture() {
 
 [Building an Ionic Framework Camera App](/docs/guides/ionic-framework-app)
 
-## API
-
 <!--DOCGEN_API_START-->
 <!--Update the source file JSDoc comments and rerun docgen to update the docs below-->
 ## API

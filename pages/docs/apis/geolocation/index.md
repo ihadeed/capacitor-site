@@ -67,8 +67,6 @@ class GeolocationExample {
 }
 ```
 
-## API
-
 <!--DOCGEN_API_START-->
 <!--Update the source file JSDoc comments and rerun docgen to update the docs below-->
 ## API
