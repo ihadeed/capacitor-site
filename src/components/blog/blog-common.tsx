@@ -15,8 +15,8 @@ export const BlogPost = ({ data, single = true }: { data: BlogData, single?: boo
 
   return (
     <div class="blog-post__wrap">
-      <div class="blog-post">
-        <Heading level={1}><a {...href(getBlogPostPath(data))}>{data.title}</a></Heading>
+      <article class="blog-post">
+        <Heading level={1} class="ui-heading-2"><a {...href(getBlogPostPath(data))}>{data.title}</a></Heading>
         <PostAuthor authorName={data.authorName} authorUrl={data.authorUrl} dateISO={data.date} />
 
         {data.featuredImage && <PostFeaturedImage data={data} />}
@@ -28,7 +28,7 @@ export const BlogPost = ({ data, single = true }: { data: BlogData, single?: boo
         {/*
         {single && <disqus-comments url={getAbsoluteBlogPostUrl(post)} siteId='capacitor' id={post.slug} />}
         */}
-      </div>
+      </article>
     </div>
   )
 }
