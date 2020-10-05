@@ -16,7 +16,7 @@ export const BlogPost = ({ data, single = true }: { data: BlogData, single?: boo
   return (
     <div class="blog-post__wrap">
       <div class="blog-post">
-        <Heading level={2}><a {...href(getBlogPostPath(data))}>{data.title}</a></Heading>
+        <Heading level={1}><a {...href(getBlogPostPath(data))}>{data.title}</a></Heading>
         <PostAuthor authorName={data.authorName} authorUrl={data.authorUrl} dateISO={data.date} />
 
         {data.featuredImage && <PostFeaturedImage data={data} />}
