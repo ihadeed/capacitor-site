@@ -30,6 +30,7 @@ describe('router', () => {
     };
     doc = {
       baseURI: baseUrl.href,
+      querySelector() {},
     } as any;
     loc = baseUrl as any;
     hstry = {
@@ -81,8 +82,8 @@ describe('router', () => {
     expect(router.activePath).toBe(`/page-1`);
     expect(router.activeHash).toBe(`#hash-change`);
 
-    expect(win.scrollX).toBe(0);
-    expect(win.scrollY).toBe(0);
+    expect(win.scrollX).toBe(50);
+    expect(win.scrollY).toBe(100);
 
     expect(newUrlChange.href).toBe(
       `https://capacitorjs.com/page-1#hash-change`,

@@ -42,7 +42,7 @@ describe('handlePushState', () => {
     const isFromPopState = false;
 
     handlePushState(win, doc, loc, hstry, isFromPopState, newUrl);
-    expect(pushedStateHref).toBe('https://stenciljs.com/page-1#hash');
+    expect(pushedStateHref).toBe(null);
     expect(elementScrolledIntoView).toBe(true);
   });
 
@@ -54,7 +54,7 @@ describe('handlePushState', () => {
     const isFromPopState = false;
 
     handlePushState(win, doc, loc, hstry, isFromPopState, newUrl);
-    expect(pushedStateHref).toBe('https://stenciljs.com/page-1#hash');
+    expect(pushedStateHref).toBe(null);
     expect(win.scrollX).toBe(50);
     expect(win.scrollY).toBe(80);
   });
@@ -69,6 +69,18 @@ describe('handlePushState', () => {
     expect(pushedStateHref).toBe('https://stenciljs.com/page-2');
     expect(win.scrollX).toBe(50);
     expect(win.scrollY).toBe(80);
+  });
+
+  it('pushState, scroll to top for same path but different search', () => {
+    win.scrollX = 50;
+    win.scrollY = 80;
+    const loc = new URL('https://stenciljs.com/page-1?search=1');
+    const newUrl = new URL('https://stenciljs.com/page-1?search=2');
+    const isFromPopState = false;
+    handlePushState(win, doc, loc, hstry, isFromPopState, newUrl);
+    expect(pushedStateHref).toBe('https://stenciljs.com/page-1?search=2');
+    expect(win.scrollX).toBe(0);
+    expect(win.scrollY).toBe(0);
   });
 
   it('pushState, scroll to top', () => {

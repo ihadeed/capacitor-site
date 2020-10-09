@@ -13,10 +13,10 @@ describe('utils', () => {
     expect(shouldPushState(loc, newUrl)).toBe(true);
   });
 
-  it('shouldPushState if same pathname but different hash', () => {
+  it('shouldPushState false if same pathname but different hash', () => {
     const loc = new URL('https://stenciljs.com/page-1');
     const newUrl = new URL('https://stenciljs.com/page-1#hash');
-    expect(shouldPushState(loc, newUrl)).toBe(true);
+    expect(shouldPushState(loc, newUrl)).toBe(false);
   });
 
   it('shouldPushState if different pathname and different hash', () => {

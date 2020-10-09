@@ -14,7 +14,7 @@ export const serializeURL = (url: URL | Location) =>
   normalizePathname(url) + url.search;
 
 export const shouldPushState = (loc: URL | Location, newUrl: URL) =>
-  loc.href !== newUrl.href;
+  serializeURL(loc) !== serializeURL(newUrl);
 
 export const handlePushState = (
   win: Window,
@@ -26,15 +26,15 @@ export const handlePushState = (
 ) => {
   if (shouldPushState(loc, newUrl)) {
     hstry.pushState(null, null, newUrl.href);
-    if (!isFromPopState) {
-      if (loc.hash !== newUrl.hash && newUrl.hash.startsWith('#')) {
-        const elm = doc.querySelector(newUrl.hash);
-        if (elm) {
-          elm.scrollIntoView();
-        }
-      } else {
-        win.scrollTo(0, 0);
+  }
+  if (!isFromPopState) {
+    if (loc.hash !== newUrl.hash && newUrl.hash.startsWith('#')) {
+      const elm = doc.querySelector(newUrl.hash);
+      if (elm) {
+        elm.scrollIntoView();
       }
+    } else {
+      win.scrollTo(0, 0);
     }
   }
 };
