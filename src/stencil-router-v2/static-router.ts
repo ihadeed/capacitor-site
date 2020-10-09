@@ -1,11 +1,6 @@
 import { Build } from '@stencil/core';
 import { createWindowRouter } from './router';
-import {
-  isPromise,
-  normalizePathname,
-  urlFromHref,
-  devDebug,
-} from './utils/helpers';
+import { isPromise, normalizePathname, devDebug } from './utils/helpers';
 import type {
   MapParamData,
   PageState,
@@ -17,18 +12,6 @@ import { setDocumentStaticData } from './utils/server-static-data-proxy';
 
 const stateHistory: StateHistory = new Map();
 
-const getCachedStateKey = (url: string | URL | Location) =>
-  (typeof url === 'string' ? urlFromHref(url) : url).href;
-
-const getCachedState = (url: string | URL) =>
-  stateHistory.get(getCachedStateKey(url));
-
-const hasCachedState = (url: string | URL) =>
-  stateHistory.has(getCachedStateKey(url));
-
-const setCachedState = (url: string | URL | Location, stateData?: any) =>
-  stateHistory.set(getCachedStateKey(url), stateData);
-
 export const staticState = (
   mapFn: MapParamData,
 ): ((params: RouteParams, url: URL) => PageState) => {
@@ -39,30 +22,6 @@ export const staticState = (
     // client side (sync)
     return staticClientState;
   }
-};
-
-const staticClientState = (_params: RouteParams | undefined, url: URL) => {
-  // client side (sync)
-  try {
-    return getCachedState(url) || getDocumentState(url);
-  } catch (e) {
-    console.error(e);
-  }
-};
-
-const getDocumentState = (url: URL | Location) => {
-  const staticElm = document.querySelector(
-    '[data-stencil-static="page.state"]',
-  ) as HTMLScriptElement | null;
-  let staticState: any;
-  if (staticElm) {
-    devDebug(`staticClientState: ${url.pathname} [parsed page.state]`);
-    staticState = JSON.parse(staticElm.textContent!);
-    staticElm.remove();
-  } else {
-    devDebug(`staticClientState: ${url.pathname} [page.state not found]`);
-  }
-  return setCachedState(url, staticState);
 };
 
 const staticServerState = (
@@ -82,6 +41,39 @@ const staticServerState = (
 
   return setDocumentStaticData(inputData);
 };
+
+const staticClientState = (_params: RouteParams | undefined, url: URL) => {
+  // client side (sync)
+  try {
+    return getCachedState(url) || getDocumentState(url, document);
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+const getDocumentState = (url: URL | Location, doc: Document) => {
+  const staticElm = doc.querySelector(
+    '[data-stencil-static="page.state"]',
+  ) as HTMLScriptElement | null;
+  let staticState: any;
+  if (staticElm) {
+    devDebug(`staticClientState: ${url.pathname} [parsed page.state]`);
+    staticState = JSON.parse(staticElm.textContent!);
+    staticElm.remove();
+  } else {
+    devDebug(`staticClientState: ${url.pathname} [page.state not found]`);
+  }
+  return setCachedState(url, staticState);
+};
+
+const getCachedState = (url: URL | Location) =>
+  stateHistory.get(normalizePathname(url));
+
+const hasCachedState = (url: URL | Location) =>
+  stateHistory.has(normalizePathname(url));
+
+const setCachedState = (url: URL | Location, stateData?: any) =>
+  stateHistory.set(normalizePathname(url), stateData);
 
 const createWindowStaticRouter = (
   win: Window,
@@ -170,7 +162,7 @@ const createWindowStaticRouter = (
   };
 
   const reloadOnPopState = () => {
-    const hasState = hasCachedState(loc.href);
+    const hasState = hasCachedState(loc);
     devDebug(`reloadOnPopState: ${loc.pathname} [hasStateCache: ${hasState}]`);
     return !hasState;
   };
@@ -188,7 +180,7 @@ const createWindowStaticRouter = (
       );
       return createWindowRouter(win, doc, loc, hstry, opts);
     }
-    getDocumentState(loc);
+    getDocumentState(loc, doc);
   }
 
   return createWindowRouter(win, doc, loc, hstry, {
@@ -200,4 +192,5 @@ const createWindowStaticRouter = (
 };
 
 export const createStaticRouter = (opts: RouterOptions = {}) =>
-  createWindowStaticRouter(window, document, location, history, fetch, opts);
+  createWindowStaticRouter(window, document, location, history, fetch, opts)
+    .router;

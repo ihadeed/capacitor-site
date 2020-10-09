@@ -15,7 +15,17 @@ export type OnChangeHandler = (newUrl: URL, oldURL: URL) => void;
 export interface Router {
   readonly Switch: FunctionalComponent<{}>;
   readonly url: URL;
+  /**
+   * Active path includes the url's `pathname`, `search` and `hash`.
+   * For example, `/pathname?search=qs#hash`
+   */
   readonly activePath: string;
+  /**
+   * Active hash includes only the url's `hash` value. The active
+   * hash value will be an empty string if there is no hash, and
+   * if there is a hash the value will always start with `#`.
+   */
+  readonly activeHash: string;
   dispose(): void;
   on(type: OnChangeType, cb: OnChangeHandler): void;
   onHrefRender(url: URL): void;
@@ -58,6 +68,7 @@ export interface RouteEntry {
 export interface InternalRouterState {
   url: URL;
   activePath: string;
+  activeHash: string;
   views: SwitchView[];
   popState: boolean;
 }

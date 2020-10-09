@@ -10,11 +10,37 @@ export const isString = (v: any): v is string => typeof v === 'string';
 export const normalizePathname = (url: URL | Location) =>
   url.pathname.toLowerCase();
 
-export const urlFromHref = (href: string) =>
-  new URL(href.split('#')[0], document.baseURI);
-
 export const serializeURL = (url: URL | Location) =>
-  url.pathname + url.search + url.hash;
+  normalizePathname(url) + url.search + url.hash;
+
+export const shouldPushState = (loc: URL | Location, newUrl: URL) =>
+  serializeURL(loc) !== serializeURL(newUrl);
+
+export const handlePushState = (
+  win: Window,
+  doc: Document,
+  loc: URL | Location,
+  hstry: History,
+  isFromPopState: boolean,
+  newUrl: URL,
+) => {
+  if (shouldPushState(loc, newUrl)) {
+    hstry.pushState(null, null, newUrl.href);
+    if (!isFromPopState) {
+      if (loc.hash !== newUrl.hash && newUrl.hash.startsWith('#')) {
+        const elm = doc.querySelector(newUrl.hash);
+        if (elm) {
+          elm.scrollIntoView();
+        }
+      } else {
+        win.scrollTo(0, 0);
+      }
+    }
+  }
+};
+
+export const urlFromHref = (doc: Document, href: string) =>
+  new URL(href, doc.baseURI);
 
 export const devDebug = (msg: string) => {
   if (Build.isDev) {
