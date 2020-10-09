@@ -18,21 +18,20 @@ export const shouldPushState = (loc: URL | Location, newUrl: URL) =>
 
 export const handlePushState = (
   win: Window,
-  doc: Document,
   loc: URL | Location,
   hstry: History,
   isFromPopState: boolean,
   newUrl: URL,
 ) => {
+  const pathBeforePush = serializeURL(loc);
+
   if (shouldPushState(loc, newUrl)) {
     hstry.pushState(null, null, newUrl.href);
   }
-  if (!isFromPopState) {
-    if (loc.hash !== newUrl.hash && newUrl.hash.startsWith('#')) {
-      const elm = doc.querySelector(newUrl.hash);
-      if (elm) {
-        elm.scrollIntoView();
-      }
+
+  if (!isFromPopState && pathBeforePush !== serializeURL(newUrl)) {
+    if (newUrl.hash.startsWith('#')) {
+      loc.href = newUrl.href;
     } else {
       win.scrollTo(0, 0);
     }

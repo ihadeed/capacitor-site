@@ -2,7 +2,6 @@ import { handlePushState } from '../utils/helpers';
 
 describe('handlePushState', () => {
   let win: any;
-  let doc: Document;
   let hstry: History;
   let pushedStateHref: string;
   let elementScrolledIntoView: boolean;
@@ -17,16 +16,8 @@ describe('handlePushState', () => {
       },
       scrollX: 0,
       scrollY: 0,
+      requestAnimationFrame() {},
     };
-    doc = {
-      querySelector() {
-        return {
-          scrollIntoView() {
-            elementScrolledIntoView = true;
-          },
-        };
-      },
-    } as any;
     hstry = {
       pushState(_data: any, _title: string, url: string) {
         pushedStateHref = url;
@@ -34,16 +25,28 @@ describe('handlePushState', () => {
     } as any;
   });
 
-  it('pushState, elm.scrollIntoView() cuz same pathname, different hash', () => {
+  it('pushState, elm.scrollIntoView() cuz different pathname and has a hash', () => {
+    win.scrollX = 50;
+    win.scrollY = 80;
+    const loc = new URL('https://stenciljs.com/page-1');
+    const newUrl = new URL('https://stenciljs.com/page-2#hash');
+    const isFromPopState = false;
+
+    handlePushState(win, loc, hstry, isFromPopState, newUrl);
+    expect(pushedStateHref).toBe('https://stenciljs.com/page-2#hash');
+    expect(loc.href).toBe('https://stenciljs.com/page-2#hash');
+  });
+
+  it('pushState, no window scroll or elm.scrollIntoView() cuz same pathname, different hash', () => {
     win.scrollX = 50;
     win.scrollY = 80;
     const loc = new URL('https://stenciljs.com/page-1');
     const newUrl = new URL('https://stenciljs.com/page-1#hash');
     const isFromPopState = false;
 
-    handlePushState(win, doc, loc, hstry, isFromPopState, newUrl);
+    handlePushState(win, loc, hstry, isFromPopState, newUrl);
     expect(pushedStateHref).toBe(null);
-    expect(elementScrolledIntoView).toBe(true);
+    expect(elementScrolledIntoView).toBe(false);
   });
 
   it('pushState, no scroll to top cuz same pathname, different hash', () => {
@@ -53,7 +56,7 @@ describe('handlePushState', () => {
     const newUrl = new URL('https://stenciljs.com/page-1#hash');
     const isFromPopState = false;
 
-    handlePushState(win, doc, loc, hstry, isFromPopState, newUrl);
+    handlePushState(win, loc, hstry, isFromPopState, newUrl);
     expect(pushedStateHref).toBe(null);
     expect(win.scrollX).toBe(50);
     expect(win.scrollY).toBe(80);
@@ -65,7 +68,7 @@ describe('handlePushState', () => {
     const loc = new URL('https://stenciljs.com/page-1');
     const newUrl = new URL('https://stenciljs.com/page-2');
     const isFromPopState = true;
-    handlePushState(win, doc, loc, hstry, isFromPopState, newUrl);
+    handlePushState(win, loc, hstry, isFromPopState, newUrl);
     expect(pushedStateHref).toBe('https://stenciljs.com/page-2');
     expect(win.scrollX).toBe(50);
     expect(win.scrollY).toBe(80);
@@ -77,7 +80,7 @@ describe('handlePushState', () => {
     const loc = new URL('https://stenciljs.com/page-1?search=1');
     const newUrl = new URL('https://stenciljs.com/page-1?search=2');
     const isFromPopState = false;
-    handlePushState(win, doc, loc, hstry, isFromPopState, newUrl);
+    handlePushState(win, loc, hstry, isFromPopState, newUrl);
     expect(pushedStateHref).toBe('https://stenciljs.com/page-1?search=2');
     expect(win.scrollX).toBe(0);
     expect(win.scrollY).toBe(0);
@@ -89,7 +92,7 @@ describe('handlePushState', () => {
     const loc = new URL('https://stenciljs.com/page-1');
     const newUrl = new URL('https://stenciljs.com/page-2');
     const isFromPopState = false;
-    handlePushState(win, doc, loc, hstry, isFromPopState, newUrl);
+    handlePushState(win, loc, hstry, isFromPopState, newUrl);
     expect(pushedStateHref).toBe('https://stenciljs.com/page-2');
     expect(win.scrollX).toBe(0);
     expect(win.scrollY).toBe(0);

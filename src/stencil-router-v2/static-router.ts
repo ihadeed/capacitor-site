@@ -80,7 +80,6 @@ const createWindowStaticRouter = (
   doc: Document,
   loc: Location,
   hstry: History,
-  fetcher: (input: RequestInfo, init?: RequestInit) => Promise<Response>,
   opts: RouterOptions,
 ) => {
   const buildId = doc.documentElement.dataset.stencilBuild;
@@ -91,41 +90,43 @@ const createWindowStaticRouter = (
 
   const loadStaticState = async (pushToUrl: URL) => {
     try {
-      if (normalizePathname(pushToUrl) === normalizePathname(location)) {
-        devDebug(`beforePush: ${pushToUrl.pathname} [no pathname change]`);
-        return true;
-      }
-
-      if (hasCachedState(pushToUrl)) {
-        // already have static state ready to go
-        devDebug(`beforePush: ${pushToUrl.pathname} [cached state]`);
-        return true;
-      }
-
-      // try fetching for the static state
-      const fetchUrl = getDataFetchPath(pushToUrl);
-      const res = await fetcher(fetchUrl, {
-        cache: 'force-cache',
-      });
-
-      if (res.ok) {
-        // awesome, we got a good response for page state data
-        const staticData = await res.json();
-        if (staticData.components) {
-          // page state is all the known components already
-          // let's preload them all before navigating
-          // await preloadComponents({ tags: staticData.components });
+      if (win.fetch) {
+        if (normalizePathname(pushToUrl) === normalizePathname(location)) {
+          devDebug(`beforePush: ${pushToUrl.pathname} [no pathname change]`);
+          return true;
         }
-        // cache the page state, which could be undefined, but that's valuable too
-        setCachedState(pushToUrl, staticData['page.state']);
-        devDebug(`beforePush: ${pushToUrl.pathname} [fetched state]`);
 
-        // stop so we don't trigger the location.href
-        return true;
-      } else {
-        devDebug(
-          `beforePush: ${pushToUrl.pathname} [fetched failed ${res.status}]`,
-        );
+        if (hasCachedState(pushToUrl)) {
+          // already have static state ready to go
+          devDebug(`beforePush: ${pushToUrl.pathname} [cached state]`);
+          return true;
+        }
+
+        // try fetching for the static state
+        const fetchUrl = getDataFetchPath(pushToUrl);
+        const res = await win.fetch(fetchUrl, {
+          cache: 'force-cache',
+        });
+
+        if (res.ok) {
+          // awesome, we got a good response for page state data
+          const staticData = await res.json();
+          if (staticData.components) {
+            // page state is all the known components already
+            // let's preload them all before navigating
+            // await preloadComponents({ tags: staticData.components });
+          }
+          // cache the page state, which could be undefined, but that's valuable too
+          setCachedState(pushToUrl, staticData['page.state']);
+          devDebug(`beforePush: ${pushToUrl.pathname} [fetched state]`);
+
+          // stop so we don't trigger the location.href
+          return true;
+        } else {
+          devDebug(
+            `beforePush: ${pushToUrl.pathname} [fetched failed ${res.status}]`,
+          );
+        }
       }
     } catch (e) {
       devDebug(`beforePush: ${pushToUrl.pathname}, ${e}`);
@@ -192,5 +193,4 @@ const createWindowStaticRouter = (
 };
 
 export const createStaticRouter = (opts: RouterOptions = {}) =>
-  createWindowStaticRouter(window, document, location, history, fetch, opts)
-    .router;
+  createWindowStaticRouter(window, document, location, history, opts).router;

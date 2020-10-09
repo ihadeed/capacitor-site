@@ -257,12 +257,12 @@ export const createWindowRouter = (
     const newUrl = urlFromHref(doc, view.h);
     const newHref = newUrl.href;
 
-    handlePushState(win, doc, loc, hstry, view.o, newUrl);
-
-    state.activePath = serializeURL(newUrl);
-    state.activeHash = newUrl.hash;
-
     if (lastHref !== newHref) {
+      handlePushState(win, loc, hstry, view.o, newUrl);
+
+      state.activePath = serializeURL(newUrl);
+      state.activeHash = newUrl.hash;
+
       onChanges.forEach((cb: OnChangeHandler) => {
         try {
           cb(urlFromHref(doc, newHref), urlFromHref(doc, lastHref));
