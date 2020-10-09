@@ -11,7 +11,7 @@ import {
   isPromise,
   isString,
   normalizePathname,
-  serializeURL as defaultSerializeUrl,
+  serializeURL,
   devDebug,
   isFunction,
   urlFromHref,
@@ -48,7 +48,6 @@ export const createWindowRouter = (
   let hasQueuedView = false;
   let lastHref = loc.href;
 
-  const serializeURL = opts?.serializeURL ?? defaultSerializeUrl;
   const onChanges: OnChangeHandler[] = [];
   const onBeforeChanges: OnChangeHandler[] = [];
 

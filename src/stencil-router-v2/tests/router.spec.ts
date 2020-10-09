@@ -78,7 +78,7 @@ describe('router', () => {
 
     await router.push('/page-1#hash-change');
     renderSwitch(router);
-    expect(router.activePath).toBe(`/page-1#hash-change`);
+    expect(router.activePath).toBe(`/page-1`);
     expect(router.activeHash).toBe(`#hash-change`);
 
     expect(win.scrollX).toBe(0);

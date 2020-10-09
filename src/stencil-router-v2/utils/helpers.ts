@@ -11,10 +11,10 @@ export const normalizePathname = (url: URL | Location) =>
   url.pathname.toLowerCase();
 
 export const serializeURL = (url: URL | Location) =>
-  normalizePathname(url) + url.search + url.hash;
+  normalizePathname(url) + url.search;
 
 export const shouldPushState = (loc: URL | Location, newUrl: URL) =>
-  serializeURL(loc) !== serializeURL(newUrl);
+  loc.href !== newUrl.href;
 
 export const handlePushState = (
   win: Window,

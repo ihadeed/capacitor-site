@@ -16,14 +16,17 @@ export interface Router {
   readonly Switch: FunctionalComponent<{}>;
   readonly url: URL;
   /**
-   * Active path includes the url's `pathname`, `search` and `hash`.
-   * For example, `/pathname?search=qs#hash`
+   * Active path includes the url's `pathname` and `search`,
+   * but does not include the `hash`. The path will
+   * always be absolute, but without the origin/host.
+   * For example, `/pathname?search=qs`
    */
   readonly activePath: string;
   /**
    * Active hash includes only the url's `hash` value. The active
-   * hash value will be an empty string if there is no hash, and
-   * if there is a hash the value will always start with `#`.
+   * hash value will be an empty string if there is no fragment identifier,
+   * and if there is a fragment the value will always start with `#`.
+   * Same as https://developer.mozilla.org/en-US/docs/Web/API/URL/hash
    */
   readonly activeHash: string;
   dispose(): void;
@@ -77,7 +80,6 @@ export interface RouterOptions {
   beforePush?: (url: URL) => void | Promise<void>;
   onHrefRender?: (navigateToUrl: URL, currentUrl: URL) => void;
   reloadOnPopState?: (ev: PopStateEvent) => boolean;
-  serializeURL?: (url: URL | Location) => string;
 }
 
 export type StateHistory = Map<string, any>;
