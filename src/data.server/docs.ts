@@ -30,9 +30,7 @@ export const getDocsData: MapParamData = async ({ id }) => {
     id = 'index.md';
   }
 
-  const results: DocsData = await parseMarkdown(join(docsDir, id), {
-    headingAnchors: true,
-  });
+  const results: DocsData = await parseMarkdown(join(docsDir, id));
 
   results.template = getTemplateFromPath(results.filePath);
 
