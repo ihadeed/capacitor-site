@@ -338,7 +338,10 @@ export const createWindowRouter = (
 
       createSwitchChildren(matchedViewChildren, hasRouteEntryChanged);
 
-      return state.views.map(v => v.c);
+      return state.views
+        .slice()
+        .reverse()
+        .map(v => v.c);
     }
   };
 
