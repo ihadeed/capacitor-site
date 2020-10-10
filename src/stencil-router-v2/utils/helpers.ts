@@ -10,11 +10,11 @@ export const isString = (v: any): v is string => typeof v === 'string';
 export const normalizePathname = (url: URL | Location) =>
   url.pathname.toLowerCase();
 
-export const serializeURL = (url: URL | Location) =>
+export const urlToPath = (url: URL | Location) =>
   normalizePathname(url) + url.search;
 
 export const shouldPushState = (loc: URL | Location, newUrl: URL) =>
-  serializeURL(loc) !== serializeURL(newUrl);
+  urlToPath(loc) !== urlToPath(newUrl);
 
 export const handlePushState = (
   win: Window,
@@ -23,7 +23,7 @@ export const handlePushState = (
   isFromPopState: boolean,
   newUrl: URL,
 ) => {
-  const pathBeforePush = serializeURL(loc);
+  const pathBeforePush = urlToPath(loc);
   const newHref = newUrl.href;
   const hasHash = newUrl.hash.startsWith('#');
 
@@ -32,7 +32,7 @@ export const handlePushState = (
   }
 
   if (!isFromPopState) {
-    if (pathBeforePush !== serializeURL(newUrl)) {
+    if (pathBeforePush !== urlToPath(newUrl)) {
       if (hasHash) {
         loc.href = newHref;
       } else {
@@ -43,9 +43,6 @@ export const handlePushState = (
     }
   }
 };
-
-export const urlFromHref = (doc: Document, href: string) =>
-  new URL(href, doc.baseURI);
 
 export const devDebug = (msg: string) => {
   if (Build.isDev) {

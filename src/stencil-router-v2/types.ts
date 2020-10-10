@@ -14,21 +14,20 @@ export type OnChangeHandler = (newUrl: URL, oldURL: URL) => void;
 
 export interface Router {
   readonly Switch: FunctionalComponent<{}>;
-  readonly url: URL;
   /**
-   * Active path includes the url's `pathname` and `search`,
+   * The active path includes the url's `pathname` and `search`,
    * but does not include the `hash`. The path will
    * always be absolute, but without the origin/host.
    * For example, `/pathname?search=qs`
    */
-  readonly activePath: string;
+  readonly path: string;
   /**
-   * Active hash includes only the url's `hash` value. The active
+   * The active hash includes only the url's `hash` value. The active
    * hash value will be an empty string if there is no fragment identifier,
    * and if there is a fragment the value will always start with `#`.
    * Same as https://developer.mozilla.org/en-US/docs/Web/API/URL/hash
    */
-  readonly activeHash: string;
+  readonly hash: string;
   dispose(): void;
   on(type: OnChangeType, cb: OnChangeHandler): void;
   onHrefRender(url: URL): void;
@@ -69,9 +68,9 @@ export interface RouteEntry {
 }
 
 export interface InternalRouterState {
-  url: URL;
-  activePath: string;
-  activeHash: string;
+  href: string;
+  path: string;
+  hash: string;
   views: SwitchView[];
   popState: boolean;
 }

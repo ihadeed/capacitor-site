@@ -72,15 +72,15 @@ describe('router', () => {
       oldUrlBeforeChange = o;
     });
     renderSwitch(router);
-    expect(router.activeHash).toBe(``);
+    expect(router.hash).toBe(``);
 
     win.scrollX = 50;
     win.scrollY = 100;
 
     await router.push('/page-1#hash-change');
     renderSwitch(router);
-    expect(router.activePath).toBe(`/page-1`);
-    expect(router.activeHash).toBe(`#hash-change`);
+    expect(router.path).toBe(`/page-1`);
+    expect(router.hash).toBe(`#hash-change`);
 
     expect(win.scrollX).toBe(50);
     expect(win.scrollY).toBe(100);
@@ -102,15 +102,15 @@ describe('router', () => {
     await router.push('/page-2');
     renderSwitch(router);
     expect(state.views).toHaveLength(1);
-    expect(router.activePath).toBe(`/page-2`);
+    expect(router.path).toBe(`/page-2`);
 
     Object.assign(loc, new URL(`https://capacitorjs.com/page-1`));
     await popState(null);
     renderSwitch(router);
     expect(state.views).toHaveLength(1);
 
-    expect(state.url.href).toBe('https://capacitorjs.com/page-1');
-    expect(router.activePath).toBe(`/page-1`);
+    expect(state.href).toBe('https://capacitorjs.com/page-1');
+    expect(router.path).toBe(`/page-1`);
   });
 
   it('push', async () => {
@@ -130,8 +130,8 @@ describe('router', () => {
     expect(state.views).toHaveLength(0);
 
     renderSwitch(router);
-    expect(state.url.pathname).toBe(`/page-1`);
-    expect(router.activePath).toBe(`/page-1`);
+    expect(state.href).toBe(`https://capacitorjs.com/page-1`);
+    expect(router.path).toBe(`/page-1`);
     expect(state.views).toHaveLength(1);
 
     win.scrollX = 50;
@@ -140,8 +140,8 @@ describe('router', () => {
     await router.push('/page-2');
     renderSwitch(router);
     expect(state.views).toHaveLength(1);
-    expect(state.url.pathname).toBe(`/page-2`);
-    expect(router.activePath).toBe(`/page-2`);
+    expect(state.href).toBe(`https://capacitorjs.com/page-2`);
+    expect(router.path).toBe(`/page-2`);
 
     expect(win.scrollX).toBe(0);
     expect(win.scrollY).toBe(0);
@@ -170,10 +170,10 @@ describe('router', () => {
     renderSwitch(router);
 
     expect(state.views).toHaveLength(1);
-    expect(state.url.href).toBe(`https://capacitorjs.com/page-1`);
-    expect(state.activePath).toBe(`/page-1`);
-    expect(router.activePath).toBe(`/page-1`);
-    expect(router.activeHash).toBe(``);
+    expect(state.href).toBe(`https://capacitorjs.com/page-1`);
+    expect(state.path).toBe(`/page-1`);
+    expect(router.path).toBe(`/page-1`);
+    expect(router.hash).toBe(``);
     expect(win.scrollX).toBe(0);
     expect(win.scrollY).toBe(0);
 

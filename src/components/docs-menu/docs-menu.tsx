@@ -50,7 +50,7 @@ export class SiteMenu implements ComponentInterface {
   expandActive() {
     if (this.toc?.root) {
       const activeIndex = this.toc.root.findIndex(
-        t => t.children && t.children.some(c => c.url === Router.activePath),
+        t => t.children && t.children.some(c => c.url === Router.path),
       );
       if (!this.expandList.includes(activeIndex)) {
         this.expandList = [...this.expandList, activeIndex];
@@ -131,7 +131,7 @@ export class SiteMenu implements ComponentInterface {
             </ul>
             <ul class="menu-list">
               {this.toc?.root.map((item, i) => {
-                const active = item.url === Router.activePath;
+                const active = item.url === Router.path;
                 const expanded = this.expandList.includes(i);
 
                 if (item.children && item.children.length > 0) {
@@ -158,7 +158,7 @@ export class SiteMenu implements ComponentInterface {
                                   {...href(childItem.url)}
                                   class={{
                                     'link-active':
-                                      childItem.url === Router.activePath,
+                                      childItem.url === Router.path,
                                   }}
                                 >
                                   {childItem.text}

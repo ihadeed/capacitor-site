@@ -22,7 +22,7 @@ export class DocsHeader implements ComponentInterface {
 
   isActive(path: string): boolean {
     const prefix = new RegExp('^' + path, 'gm');
-    const regexRes = prefix.test(Router.activePath);
+    const regexRes = prefix.test(Router.path);
 
     return regexRes;
   }
@@ -49,7 +49,10 @@ export class DocsHeader implements ComponentInterface {
 
           <nav class="docs-header-links">
             <div class="docs-header-links__internal hide-mobile">
-              <a {...href(docsVersionHref('/docs'))} class={{ active: template === 'guide' }}>
+              <a
+                {...href(docsVersionHref('/docs'))}
+                class={{ active: template === 'guide' }}
+              >
                 Guides
               </a>
               <a

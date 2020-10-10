@@ -129,7 +129,7 @@ const versionedDocsPath = '/docs/v3';
 
 export const docsVersionHref = (path: string) => {
   if (
-    Router.activePath.startsWith(versionedDocsPath) &&
+    Router.path.startsWith(versionedDocsPath) &&
     !path.startsWith(versionedDocsPath)
   ) {
     return path.replace(docsPath, versionedDocsPath);

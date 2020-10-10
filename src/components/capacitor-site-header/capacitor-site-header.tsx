@@ -40,7 +40,7 @@ export class SiteHeader {
     this.starCount = formatNumber('4.4K');
 
     // Figure out if we should force hover a nav item
-    this.forceHovered = Router.activePath.replace('/', '').replace('#', '');
+    this.forceHovered = Router.path.replace('/', '').replace('#', '');
 
     Router.on('change', (v: any) => {
       // TODO: Make this an object and share it w/ render
@@ -102,13 +102,15 @@ export class SiteHeader {
               <img
                 src="/assets/img/heading/logo-white.png"
                 alt="Capacitor Logo"
-                width="252" height="48"
+                width="252"
+                height="48"
               />
             ) : (
               <img
                 src="/assets/img/heading/logo-black.png"
                 alt="Capacitor Logo"
-                width="252" height="48"
+                width="252"
+                height="48"
               />
             )}
           </a>
@@ -218,8 +220,7 @@ const NavLink = (
 ) => {
   // Detect active if path equals the route path or the current active path plus
   // the route hash equals the path, to support links like /#features
-  const active =
-    Router.activePath === path || Router.activePath + Router.url.hash === path;
+  const active = Router.path === path || Router.path + Router.hash === path;
 
   return (
     <a

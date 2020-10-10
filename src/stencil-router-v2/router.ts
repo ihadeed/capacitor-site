@@ -11,10 +11,9 @@ import {
   isPromise,
   isString,
   normalizePathname,
-  serializeURL,
+  urlToPath,
   devDebug,
   isFunction,
-  urlFromHref,
   handlePushState,
 } from './utils/helpers';
 import type {
@@ -50,29 +49,22 @@ export const createWindowRouter = (
 
   const onChanges: OnChangeHandler[] = [];
   const onBeforeChanges: OnChangeHandler[] = [];
+  const urlFromHref = (href: string) => new URL(href, doc.baseURI);
 
-  const { state, dispose } = createStore<InternalRouterState>(
-    {
-      url: urlFromHref(doc, lastHref),
-      activePath: serializeURL(loc),
-      activeHash: loc.hash,
-      views: [],
-      popState: false,
-    },
-    (newV, oldV, prop) => {
-      if (prop === 'url') {
-        return (newV as URL).href !== (oldV as URL).href;
-      }
-      return newV !== oldV;
-    },
-  );
+  const { state, dispose } = createStore<InternalRouterState>({
+    href: lastHref,
+    path: urlToPath(loc),
+    hash: loc.hash,
+    views: [],
+    popState: false,
+  });
 
   const pushState = (updateUrl: URL) => {
     try {
-      const path = serializeURL(updateUrl);
+      const path = urlToPath(updateUrl);
       if (path != null) {
         devDebug(`pushState: ${path}`);
-        state.url = updateUrl;
+        state.href = updateUrl.href;
       }
     } catch (e) {
       console.error(e);
@@ -88,8 +80,8 @@ export const createWindowRouter = (
       const params = matchPath(normalizePathname(testUrl), route.path);
       if (params) {
         if (route.to != null) {
-          pushState(urlFromHref(doc, route.to));
-          return match(urlFromHref(doc, route.to), routes);
+          pushState(urlFromHref(route.to));
+          return match(urlFromHref(route.to), routes);
         } else {
           return { params, route, index: i };
         }
@@ -99,24 +91,29 @@ export const createWindowRouter = (
   };
 
   const push = async (href: string, isFromPopState = false) => {
-    const pushToUrl = urlFromHref(doc, href);
-    onBeforeChanges.forEach(cb => {
+    const pushToUrl = urlFromHref(href);
+
+    if (state.href !== pushToUrl.href) {
+      onBeforeChanges.forEach(cb => {
+        try {
+          cb(urlFromHref(href), urlFromHref(lastHref));
+        } catch (e) {
+          console.error(e);
+        }
+      });
+
       try {
-        cb(urlFromHref(doc, href), urlFromHref(doc, lastHref));
+        if (opts?.beforePush) {
+          await opts.beforePush(pushToUrl);
+        }
       } catch (e) {
         console.error(e);
       }
-    });
-
-    try {
-      if (opts?.beforePush) {
-        await opts.beforePush(pushToUrl);
-      }
-    } catch (e) {
-      console.error(e);
+      state.href = pushToUrl.href;
+      state.popState = isFromPopState;
+    } else if (!isFromPopState) {
+      loc.href = pushToUrl.href;
     }
-    state.url = pushToUrl;
-    state.popState = isFromPopState;
   };
 
   const createSwitchChildren = (
@@ -153,15 +150,12 @@ export const createWindowRouter = (
 
   const pushView = (matchedViewChildren: any) => {
     const views = state.views;
-    if (
-      views.length === 0 ||
-      (views.length > 0 && views[0].h !== state.url.href)
-    ) {
+    if (views.length === 0 || (views.length > 0 && views[0].h !== state.href)) {
       state.views = [
         {
           s: VIEW_STATE.QUEUED,
           c: matchedViewChildren,
-          h: state.url.href,
+          h: state.href,
           o: state.popState,
           p: [],
         },
@@ -254,18 +248,18 @@ export const createWindowRouter = (
     }
 
     const view = state.views[0];
-    const newUrl = urlFromHref(doc, view.h);
+    const newUrl = urlFromHref(view.h);
     const newHref = newUrl.href;
 
     if (lastHref !== newHref) {
       handlePushState(win, loc, hstry, view.o, newUrl);
 
-      state.activePath = serializeURL(newUrl);
-      state.activeHash = newUrl.hash;
+      state.path = urlToPath(newUrl);
+      state.hash = newUrl.hash;
 
       onChanges.forEach((cb: OnChangeHandler) => {
         try {
-          cb(urlFromHref(doc, newHref), urlFromHref(doc, lastHref));
+          cb(urlFromHref(newHref), urlFromHref(lastHref));
         } catch (e) {
           console.error(e);
         }
@@ -298,7 +292,7 @@ export const createWindowRouter = (
     if (route) {
       if (isFunction(route.jsx)) {
         const pageState = route.mapParams
-          ? route.mapParams(matchResult.params, state.url)
+          ? route.mapParams(matchResult.params, urlFromHref(state.href))
           : undefined;
 
         if (Build.isServer) {
@@ -322,11 +316,11 @@ export const createWindowRouter = (
   };
 
   const Switch: any = (_: any, childrenRoutes: RouteEntry[]): any => {
-    devDebug(`switch render: ${state.url.pathname}`);
-    const matchResult = match(state.url, childrenRoutes);
+    devDebug(`switch render: ${state.href}`);
+    const matchResult = match(urlFromHref(state.href), childrenRoutes);
     const matchedViewChildren = getRouteChildren(matchResult);
 
-    const activeMatchResult = match(urlFromHref(doc, loc.href), childrenRoutes);
+    const activeMatchResult = match(urlFromHref(loc.href), childrenRoutes);
     const hasRouteEntryChanged =
       activeMatchResult?.index !== matchResult?.index;
 
@@ -350,20 +344,17 @@ export const createWindowRouter = (
 
   const router: Router = (defaultRouter = {
     Switch,
-    get url() {
-      return state.url;
+    get path() {
+      return state.path;
     },
-    get activePath() {
-      return state.activePath;
-    },
-    get activeHash() {
-      return state.activeHash;
+    get hash() {
+      return state.hash;
     },
     push,
     on,
     onHrefRender: navigateToUrl => {
       if (isFunction(opts.onHrefRender)) {
-        opts.onHrefRender(navigateToUrl, state.url);
+        opts.onHrefRender(navigateToUrl, urlFromHref(state.href));
       }
     },
     preload: opts => {
@@ -384,7 +375,7 @@ export const createWindowRouter = (
       win.removeEventListener('popstate', onPopState);
       dispose();
     },
-    serializeURL,
+    serializeURL: urlToPath,
   });
 
   // listen URL changes
@@ -404,9 +395,10 @@ export const href = (
     return {};
   }
 
-  const goToUrl = urlFromHref(document, href);
+  const baseURI = document.baseURI;
+  const goToUrl = new URL(href, baseURI);
 
-  if (href.startsWith('#') || goToUrl.host !== new URL(document.baseURI).host) {
+  if (href.startsWith('#') || goToUrl.host !== new URL(baseURI).host) {
     return {
       href,
     };
@@ -437,7 +429,7 @@ export const href = (
   const anchor = href.includes('#') ? `#${href.split('#')[1]}` : '';
 
   return {
-    href: `${router.serializeURL(goToUrl)}${anchor}`,
+    href: router.serializeURL(goToUrl) + anchor,
     onClick: (ev: MouseEvent) => {
       if (!ev.metaKey && !ev.ctrlKey && ev.which != 2 && ev.button != 1) {
         ev.preventDefault();
