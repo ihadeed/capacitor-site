@@ -25,7 +25,7 @@ describe('handlePushState', () => {
     } as any;
   });
 
-  it('pushState, elm.scrollIntoView() cuz different pathname and has a hash', () => {
+  it('pushState, set location.hash cuz different pathname and has a hash', () => {
     win.scrollX = 50;
     win.scrollY = 80;
     const loc = new URL('https://stenciljs.com/page-1');
@@ -34,10 +34,10 @@ describe('handlePushState', () => {
 
     handlePushState(win, loc, hstry, isFromPopState, newUrl);
     expect(pushedStateHref).toBe('https://stenciljs.com/page-2#hash');
-    expect(loc.href).toBe('https://stenciljs.com/page-2#hash');
+    expect(loc.hash).toBe('#hash');
   });
 
-  it('pushState, no window scroll or elm.scrollIntoView() cuz same pathname, different hash', () => {
+  it('no pushState, set location.hash cuz same pathname and has a hash', () => {
     win.scrollX = 50;
     win.scrollY = 80;
     const loc = new URL('https://stenciljs.com/page-1');
@@ -46,10 +46,10 @@ describe('handlePushState', () => {
 
     handlePushState(win, loc, hstry, isFromPopState, newUrl);
     expect(pushedStateHref).toBe(null);
-    expect(elementScrolledIntoView).toBe(false);
+    expect(loc.hash).toBe('#hash');
   });
 
-  it('pushState, no scroll to top cuz same pathname, different hash', () => {
+  it('no scroll to top cuz same pathname, different hash', () => {
     win.scrollX = 50;
     win.scrollY = 80;
     const loc = new URL('https://stenciljs.com/page-1');
@@ -62,7 +62,7 @@ describe('handlePushState', () => {
     expect(win.scrollY).toBe(80);
   });
 
-  it('pushState, no scroll to top cuz its from popstate event', () => {
+  it('no scroll to top cuz its from popstate event', () => {
     win.scrollX = 50;
     win.scrollY = 80;
     const loc = new URL('https://stenciljs.com/page-1');
@@ -74,7 +74,7 @@ describe('handlePushState', () => {
     expect(win.scrollY).toBe(80);
   });
 
-  it('pushState, scroll to top for same path but different search', () => {
+  it('window scroll to top for same path but different search', () => {
     win.scrollX = 50;
     win.scrollY = 80;
     const loc = new URL('https://stenciljs.com/page-1?search=1');
@@ -86,7 +86,7 @@ describe('handlePushState', () => {
     expect(win.scrollY).toBe(0);
   });
 
-  it('pushState, scroll to top', () => {
+  it('window scroll to top', () => {
     win.scrollX = 50;
     win.scrollY = 80;
     const loc = new URL('https://stenciljs.com/page-1');
