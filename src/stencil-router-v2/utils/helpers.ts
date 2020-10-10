@@ -24,21 +24,22 @@ export const handlePushState = (
   newUrl: URL,
 ) => {
   const pathBeforePush = serializeURL(loc);
-  const newUrlHash = newUrl.hash;
+  const newHref = newUrl.href;
+  const hasHash = newUrl.hash.startsWith('#');
 
   if (shouldPushState(loc, newUrl)) {
-    hstry.pushState(null, null, newUrl.href);
+    hstry.pushState(null, null, newHref);
   }
 
   if (!isFromPopState) {
     if (pathBeforePush !== serializeURL(newUrl)) {
-      if (newUrlHash.startsWith('#')) {
-        loc.hash = newUrlHash;
+      if (hasHash) {
+        loc.href = newHref;
       } else {
         win.scrollTo(0, 0);
       }
-    } else if (newUrlHash.startsWith('#')) {
-      loc.hash = newUrlHash;
+    } else if (hasHash) {
+      loc.href = newHref;
     }
   }
 };

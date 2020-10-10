@@ -34,7 +34,7 @@ describe('handlePushState', () => {
 
     handlePushState(win, loc, hstry, isFromPopState, newUrl);
     expect(pushedStateHref).toBe('https://stenciljs.com/page-2#hash');
-    expect(loc.hash).toBe('#hash');
+    expect(loc.href).toBe('https://stenciljs.com/page-2#hash');
   });
 
   it('no pushState, set location.hash cuz same pathname and has a hash', () => {
@@ -46,7 +46,7 @@ describe('handlePushState', () => {
 
     handlePushState(win, loc, hstry, isFromPopState, newUrl);
     expect(pushedStateHref).toBe(null);
-    expect(loc.hash).toBe('#hash');
+    expect(loc.href).toBe('https://stenciljs.com/page-1#hash');
   });
 
   it('no scroll to top cuz same pathname, different hash', () => {
