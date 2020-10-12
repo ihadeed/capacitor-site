@@ -16,13 +16,14 @@ Plugins in Capacitor enable JavaScript to interface directly with Native APIs.
     column-gap: 20px;
     margin: 0 20px;
   }
-  .ui-card h4, p {
-    padding: 0;
-    margin: 20px 20px 0 20px;
-  }
   .ui-card p {
     padding: 0;
     margin: 10px 20px 20px 20px;
+  }
+  .ui-card p.title {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 20px 20px 0 20px;
   }
   .ui-card a {
     color: black !important;
@@ -43,12 +44,12 @@ Plugins in Capacitor enable JavaScript to interface directly with Native APIs.
 <ui-grid>
   <ui-card class="ui-col ui-col-12 ui-col-xs-12 ui-col-sm-6 ui-col-md-6">
     <img src="/assets/img/docs/core-plugins.png">
-    <h4><a href="/docs/apis">Official Plugins</a></h4>
+    <p class="title"><a href="/docs/apis">Official Plugins</a></p>
     <p>Step-by-step guides to setting up your system and installing the framework.</p>
   </ui-card>
   <ui-card class="ui-col ui-col-12 ui-col-xs-12 ui-col-sm-6 ui-col-md-6">
     <img src="/assets/img/docs/community-plugins.png">
-    <h4><a href="/docs/plugins/community">Community Plugins</a></h4>
+    <p class="title"><a href="/docs/plugins/community">Community Plugins</a></p>
     <p>Dive into Ionic Framework’s beautifylly designed UI component library.</p>
   </ui-card>
 </ui-grid>
