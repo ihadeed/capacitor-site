@@ -12,7 +12,7 @@ import {
 } from '@stencil/core';
 import { href } from '../../stencil-router-v2';
 import type { TableOfContents } from '@stencil/ssg';
-import Router, { docsVersionHref } from '../../router';
+import { docsVersionHref } from '../../router';
 import state from '../../store';
 import type { DocsTemplate } from '../../data.server/docs';
 
@@ -23,10 +23,14 @@ import type { DocsTemplate } from '../../data.server/docs';
 })
 export class SiteMenu implements ComponentInterface {
   @Prop() template: DocsTemplate;
-
   @Prop() toc: TableOfContents;
+  @Prop() activePath: string;
 
-  @State() expandList = [];
+  @State() expands: { [key: string]: number[] } = {
+    guide: [],
+    plugins: [2],
+    reference: [],
+  };
 
   @State() showOverlay = false;
 
@@ -44,16 +48,23 @@ export class SiteMenu implements ComponentInterface {
 
   componentWillLoad() {
     this.expandActive();
-    Router.on('change', () => this.expandActive());
   }
 
+  @Watch('template')
+  @Watch('activePath')
   expandActive() {
     if (this.toc?.root) {
       const activeIndex = this.toc.root.findIndex(
-        t => t.children && t.children.some(c => c.url === Router.path),
+        t => t.children && t.children.some(c => c.url === this.activePath),
       );
-      if (!this.expandList.includes(activeIndex)) {
-        this.expandList = [...this.expandList, activeIndex];
+      if (
+        activeIndex > -1 &&
+        !this.expands[this.template].includes(activeIndex)
+      ) {
+        this.expands = {
+          ...this.expands,
+          [this.template]: [...this.expands[this.template], activeIndex],
+        };
       }
     }
   }
@@ -62,12 +73,18 @@ export class SiteMenu implements ComponentInterface {
     return (e: MouseEvent) => {
       e.preventDefault();
 
-      if (this.expandList.includes(itemNumber)) {
-        this.expandList.splice(this.expandList.indexOf(itemNumber), 1);
-        this.expandList = [...this.expandList];
+      if (this.expands[this.template].includes(itemNumber)) {
+        this.expands[this.template].splice(
+          this.expands[this.template].indexOf(itemNumber),
+          1,
+        );
       } else {
-        this.expandList = [...this.expandList, itemNumber];
+        this.expands[this.template] = [
+          ...this.expands[this.template],
+          itemNumber,
+        ];
       }
+      this.expands = { ...this.expands };
     };
   };
 
@@ -131,8 +148,8 @@ export class SiteMenu implements ComponentInterface {
             </ul>
             <ul class="menu-list">
               {this.toc?.root.map((item, i) => {
-                const active = item.url === Router.path;
-                const expanded = this.expandList.includes(i);
+                const isActive = item.url === this.activePath;
+                const expanded = this.expands[this.template].includes(i);
 
                 if (item.children && item.children.length > 0) {
                   return (
@@ -158,7 +175,7 @@ export class SiteMenu implements ComponentInterface {
                                   {...href(childItem.url)}
                                   class={{
                                     'link-active':
-                                      childItem.url === Router.path,
+                                      childItem.url === this.activePath,
                                   }}
                                 >
                                   {childItem.text}
@@ -187,7 +204,7 @@ export class SiteMenu implements ComponentInterface {
                       <a
                         {...href(item.url)}
                         class={{
-                          'section-active': active,
+                          'section-active': isActive,
                         }}
                       >
                         <span class="section-active-indicator" />

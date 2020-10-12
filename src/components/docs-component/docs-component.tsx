@@ -9,7 +9,7 @@ import {
 import Helmet from '@stencil/helmet';
 import { RenderJsxAst } from '@stencil/ssg';
 import { DocsData } from '../../data.server/docs';
-import { docsVersionHref } from '../../router';
+import Router, { docsVersionHref } from '../../router';
 import { href } from '../../stencil-router-v2';
 
 @Component({
@@ -71,6 +71,7 @@ export class DocsComponent implements ComponentInterface {
           ref={el => (this.menuEl = el)}
           template={data.template}
           toc={data.tableOfContents}
+          activePath={Router.path}
         />
 
         <div class="content-container">
