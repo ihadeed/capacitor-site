@@ -4,6 +4,8 @@
   display: flex;
   align-items: center;
 
+  padding-left: 32px;
+
   position: sticky;
 
   top: 0;
@@ -16,10 +18,11 @@
   color: #98a2ad;
 
   box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.06);
+  border-inline-start: 1px solid rgba(0, 0, 0, 0.06);
 
   letter-spacing: 0;
 
-  z-index: 1;
+  z-index: 3;
 }
 
 header {
@@ -34,13 +37,14 @@ header {
   flex-wrap: wrap;
   align-items: center;
 
+  padding-right: 32px;
+
   background: #fff;
 }
 
 .docs-search--mobile {
   display: none;
-
-  flex: 0;
+  flex: 1;
 }
 
 .docs-header-links {
@@ -52,32 +56,28 @@ header {
 
   a {
     color: #98a2ad;
-    font-weight: 500;
 
     font-size: 15px;
 
     border-bottom: none;
-    text-decoration: none;
-    transition: none;
 
     &:hover {
       color: #858e97;
     }
 
     &.active {
-      color: #0091fa;
-      border-bottom: 2px solid #0091fa;
+      font-weight: 500;
+
+      color: #222d3a;
     }
   }
 }
 
 .docs-header-links__internal {
-  margin: 0 24px;
-  white-space: nowrap;
+  margin-bottom: 2px;
 
   a {
-    margin: 0 10px;
-    padding: 10px 0 20px 0;
+    margin-right: 24px;
   }
 }
 
@@ -97,7 +97,6 @@ header {
 
   margin-left: 2px;
   margin-right: 30px;
-  white-space: nowrap;
 
   ion-icon {
     margin-left: 22px;
@@ -118,6 +117,17 @@ more-button {
 }
 
 @media screen and (max-width: 768px) {
+  :host {
+    border-inline-start: none;
+  }
+
+  header {
+    left: 0;
+
+    padding-left: 64px;
+    padding-right: 0px;
+  }
+
   .docs-search--mobile,
   more-button {
     display: block;

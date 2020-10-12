@@ -1,12 +1,11 @@
-
 import { Component, Prop, h, Host } from '@stencil/core';
 
 @Component({
   tag: 'site-backdrop',
   styleUrl: 'site-backdrop.scss',
-  scoped: true
+  scoped: true,
 })
-export class MoreButton {
+export class SiteBackdrop {
   @Prop() visible = false;
 
   render() {
@@ -14,7 +13,7 @@ export class MoreButton {
       <Host
         tabindex="-1"
         class={{
-          'site-backdrop--visible': this.visible
+          'site-backdrop--visible': this.visible,
         }}
       />
     );

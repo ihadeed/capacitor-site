@@ -63,6 +63,7 @@ export namespace Components {
         "toggleOverlayMenu": () => Promise<void>;
     }
     interface DocsSearch {
+        "placeholder": string;
     }
     interface InPageNavigation {
         "headings": HeadingData[];
@@ -381,6 +382,7 @@ declare namespace LocalJSX {
         "toc"?: TableOfContents;
     }
     interface DocsSearch {
+        "placeholder"?: string;
     }
     interface InPageNavigation {
         "headings"?: HeadingData[];
