@@ -25,7 +25,7 @@ Plugins in Capacitor enable JavaScript to interface directly with Native APIs.
     margin: 10px 20px 20px 20px;
   }
   .ui-card a {
-    color: black;
+    color: black !important;
     border: 0;
   }
   .ui-card {
