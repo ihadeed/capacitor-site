@@ -101,7 +101,7 @@ export class SiteMenu implements ComponentInterface {
               >
                 Docs
               </a>
-              <version-select />
+              {/* <version-select /> */}
             </div>
             <ul class="section-list">
               <li>
