@@ -4,11 +4,9 @@ describe('handlePushState', () => {
   let win: any;
   let hstry: History;
   let pushedStateHref: string;
-  let elementScrolledIntoView: boolean;
 
   beforeEach(() => {
     pushedStateHref = null;
-    elementScrolledIntoView = false;
     win = {
       scrollTo(x: number, y: number) {
         win.scrollX = x;
