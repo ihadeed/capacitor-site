@@ -71,7 +71,15 @@ export class InPageNavigtion {
   }
 
   render() {
-    const headings = this.headings.filter(heading => heading.level !== 1);
+    const headings = this.headings
+      .filter(heading => heading.level !== 1)
+      .reduce((headings, h) => {
+        if (!headings.some(d => d.id === h.id)) {
+          headings.push(h);
+        }
+        return headings;
+      }, [] as HeadingData[]);
+
     const h1 = this.headings.find(heading => heading.level === 1);
 
     const submitEditLink = this.repoFileUrl ? (
