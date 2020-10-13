@@ -99,6 +99,9 @@ export class DocsSearch implements ComponentInterface {
         }
 
         Router.push(url)
+      },
+      transformData: (hits: { ([key]:any) }[]) => {
+        console.log(hits);
       }
     });    
   }

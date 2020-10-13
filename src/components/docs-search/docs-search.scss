@@ -47,6 +47,7 @@ docs-search {
 
   .algolia-autocomplete[class^='algolia-autocomplete'] {
     flex: 1;
+    width: 100%;
 
     .ds-dropdown-menu {
       box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.08),
