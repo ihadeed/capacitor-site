@@ -13000,7 +13000,10 @@ class DocsSearch {
     constructor(hostRef) {
         registerInstance(this, hostRef);
         this.placeholder = 'Search';
-        this.searchLeft = 0;
+        this.search = {
+            left: 0,
+            open: false
+        };
         this.input = {
             isPristine: true,
             isEmpty: true
@@ -13034,7 +13037,7 @@ class DocsSearch {
                 search: 600,
             };
             const searchBarLeft = (_b = (_a = this.input.el) === null || _a === void 0 ? void 0 : _a.getBoundingClientRect()) === null || _b === void 0 ? void 0 : _b.left;
-            this.searchLeft = (widths.body - searchBarLeft) / 2 - widths.search + 64;
+            this.search = Object.assign(Object.assign({}, this.search), { left: (widths.body - searchBarLeft) / 2 - widths.search + 64 });
         });
     }
     setupSearch() {
@@ -13051,6 +13054,9 @@ class DocsSearch {
                     this.handleInput();
                     this.handleResize();
                 }
+            },
+            handleSelected: () => {
+                this.search = Object.assign(Object.assign({}, this.search), { open: false });
             }
         });
     }
@@ -13069,15 +13075,17 @@ class DocsSearch {
     render() {
         const { placeholder } = this;
         return (h(Host, { id: `id-${this.uniqueId}`, style: {
-                '--search-left': this.searchLeft.toString().concat('px')
+                '--search-left': this.search.left.toString().concat('px')
             } }, h("ion-icon", { class: "search", icon: "search" }), h("input", { id: `input-${this.uniqueId}`, name: "search", type: "search", autocomplete: "off", placeholder: placeholder, "aria-label": placeholder, required: true }), h("ion-icon", { style: {
                 display: this.input.isEmpty ? 'none' : 'block'
             }, class: "close", icon: "close", onClick: () => {
                 this.input.el.value = '';
                 this.input = Object.assign(Object.assign({}, this.input), { isEmpty: true });
-            } }), h("site-backdrop", { visible: !this.input.isEmpty, onClick: () => {
+                this.search = Object.assign(Object.assign({}, this.search), { open: false });
+            } }), h("site-backdrop", { visible: this.search.open, onClick: () => {
                 this.input.el.value = '';
                 this.input = Object.assign(Object.assign({}, this.input), { isEmpty: true });
+                this.search = Object.assign(Object.assign({}, this.search), { open: false });
             } })));
     }
     get el() { return getElement(this); }
@@ -13087,7 +13095,7 @@ class DocsSearch {
         "$tagName$": "docs-search",
         "$members$": {
             "placeholder": [1],
-            "searchLeft": [32],
+            "search": [32],
             "input": [32]
         },
         "$listeners$": [[9, "resize", "handleResize"]],

@@ -1,4 +1,5 @@
 import { State, Component, ComponentInterface, Element, Prop, Host, h, Listen } from '@stencil/core';
+import Router from '../../router';
 import { importResource } from '../../utils/common';
 
 declare global {
@@ -14,7 +15,10 @@ declare global {
 export class DocsSearch implements ComponentInterface {
   @Element() el: HTMLElement;
   @Prop() placeholder = 'Search';
-  @State() searchLeft: number = 0;
+  @State() search: { left: number, open: boolean } = {
+    left: 0,
+    open: false
+  }
   @State() input: {
     el?: HTMLInputElement,
     isPristine: boolean,
@@ -61,7 +65,10 @@ export class DocsSearch implements ComponentInterface {
       }
       const searchBarLeft = this.input.el?.getBoundingClientRect()?.left;
       
-      this.searchLeft = (widths.body - searchBarLeft) / 2 - widths.search + 64;
+      this.search = {
+        ...this.search,
+        left: (widths.body - searchBarLeft) / 2 - widths.search + 64
+      }      
     });
   }
 
@@ -84,6 +91,14 @@ export class DocsSearch implements ComponentInterface {
           this.handleInput();
           this.handleResize();
         }
+      },
+      handleSelected: (_: any, __: any, { url }: { url: string }) => {
+        this.search = {
+          ...this.search,
+          open: false
+        }
+
+        Router.push(url)
       }
     });    
   }
@@ -109,7 +124,7 @@ export class DocsSearch implements ComponentInterface {
       <Host
         id={`id-${this.uniqueId}`}
         style={{
-          '--search-left': this.searchLeft.toString().concat('px')
+          '--search-left': this.search.left.toString().concat('px')
         }}
       >
         <ion-icon class="search" icon="search" />
@@ -134,15 +149,23 @@ export class DocsSearch implements ComponentInterface {
               ...this.input,
               isEmpty: true,
             }
+            this.search = {
+              ...this.search,
+              open: false
+            }
           }}
         />
         <site-backdrop
-          visible={!this.input.isEmpty}
+          visible={this.search.open}
           onClick={() => {
             this.input.el.value = '';
             this.input = {
               ...this.input,
               isEmpty: true,
+            }
+            this.search = {
+              ...this.search,
+              open: false
             }
           }}  
         />
