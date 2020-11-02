@@ -24,7 +24,7 @@ export const staticState = (
   }
 };
 
-const staticServerState = (
+export const staticServerState = (
   params: RouteParams,
   url: URL,
   mapFn: MapParamData,
@@ -42,7 +42,7 @@ const staticServerState = (
   return setDocumentStaticData(inputData);
 };
 
-const staticClientState = (_params: RouteParams | undefined, url: URL) => {
+export const staticClientState = (_params: RouteParams | undefined, url: URL) => {
   // client side (sync)
   try {
     return getCachedState(url) || getDocumentState(url, document);

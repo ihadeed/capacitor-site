@@ -1,13 +1,15 @@
-import { Component, Element, State, h, VNode, Host } from '@stencil/core';
+import { Component, Element, State, h, VNode, Host, Build } from '@stencil/core';
 import {
   ResponsiveContainer,
   AnchorButton,
   IntersectionHelper,
 } from '@ionic-internal/ionic-ds';
-import { href } from '../../stencil-router-v2';
+import { href, staticServerState, staticClientState } from '../../stencil-router-v2';
 
 import Router from '../../router';
 import state from '../../store';
+import fetch from 'node-fetch';
+import { parseMarkdownContent } from '@stencil/ssg/parse';
 
 const formatNumber = n => {
   if (n > 1000) {
@@ -36,8 +38,30 @@ export class SiteHeader {
   @State() starCount?: number;
 
   async componentWillLoad() {
+    if (Build.isServer) {  
+      let stars;    
+
+      staticServerState({}, new URL(globalThis.location.href), async () => {
+        const response = await fetch('https://github.com/ionic-team/capacitor', {
+          method: 'GET',
+          headers: { 'Content-Type': 'text/html' }
+        });
+        parseMarkdownContent(await response.text(), {
+          beforeHtmlSerialize(frag: DocumentFragment) {
+            const starsEl = frag.querySelector('a.social-count.js-social-count');
+            stars = starsEl.textContent.trim();
+          }
+        })
+
+        return stars;
+      })
+    } else {
+      const { stars } = staticClientState({}, new URL(globalThis.location.href));
+      this.starCount = stars;
+    }
     // TODO pull this in from GitHub at build
     this.starCount = formatNumber('4.4K');
+
 
     // Figure out if we should force hover a nav item
     this.forceHovered = Router.path.replace('/', '').replace('#', '');
